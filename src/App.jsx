@@ -1,33 +1,35 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/home'
 import './styles/App.css'
+import "bootstrap/dist/css/bootstrap.css";
 
-async function fetchA(){
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}WeatherForecast`)
-  console.log(response)
-  // return await response
-}
+// async function fetchA(){
+//   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}WeatherForecast`)
+//   console.log(response)
+//   // return await response
+// }
 
 function App() {
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   
-  const A = async (url) => {
-    let aux = await fetch(url + 'WeatherForecast')
-    setData(await aux.json())
-  }
+  // const A = async (url) => {
+  //   let aux = await fetch(url + 'WeatherForecast')
+  //   setData(await aux.json())
+  // }
   
-  useEffect(() => {
-    A(import.meta.env.VITE_BACKEND_SERVICE)
-  }, []);
+  // useEffect(() => {
+  //   A(import.meta.env.VITE_BACKEND_SERVICE)
+  // }, []);
 
   return (
-    <div className="App">
-      {data.map(elem => {
-        return <div>
-          {elem.date}
-        </div>
-      })}
-    </div>
+    <>
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<Home />} />
+      </Routes>
+  </BrowserRouter>
+    </>
   )
 }
 
