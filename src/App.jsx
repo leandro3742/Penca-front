@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/home'
 import './styles/App.css'
 import "bootstrap/dist/css/bootstrap.css";
+import Login from './pages/login';
 
 // async function fetchA(){
 //   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}WeatherForecast`)
@@ -27,6 +28,8 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+
       </Routes>
   </BrowserRouter>
     </>

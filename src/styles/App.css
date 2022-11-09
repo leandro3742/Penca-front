@@ -5,6 +5,77 @@
   text-align: center;
 }
 
+.center{
+  margin: 0 auto;
+}
+
+.enLinea{
+  display: inline-block;
+}
+
+.izq{
+  float: left;
+}
+
+.der{
+  float: right;
+}
+
+.gris{
+  background: grey;
+}
+.rojo{
+  background: rgb(212, 11, 11);
+}
+
+.login{
+  margin-top: 15vh;
+  padding: 80px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+
+}
+
+
+
+
+.btn-login{
+  border-radius: 5px;
+  margin-top: 25px;
+  width: 120px;
+  height: 35px;
+  background: none;
+  border: 1px solid white;
+  color: white;
+}
+
+.btn-login:hover{
+  color: rgb(161, 161, 0);
+  border: 1px solid rgb(161, 161, 0);
+  box-shadow: 4px 2px 4px 4px #0c0c0c;
+
+
+
+}
+
+
+body{
+  position: justify;
+  background-image: url("https://images.hdqwalls.com/wallpapers/soccer-players-football-4k-q3.jpg");
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+}
+
+
+
+.inp{
+  background: transparent;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
