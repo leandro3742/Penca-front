@@ -2,7 +2,9 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div className='btn btn-primary'>Home</div>
+    <div >
+    <a href="/login"><div className='btn btn-primary'>Login</div></a>
+    </div>
   )
   
 }

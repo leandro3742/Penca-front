@@ -33,9 +33,48 @@
   padding: 80px;
   border-radius: 5px;
   box-shadow: 4px 2px 4px 4px #252525;
+  width: 40%;
 
 }
 
+
+.login1{
+  background: rgb(45, 66, 55);
+  opacity: 0.7;
+  margin-top: 18vh;
+  padding: 80px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+  width: 40%;
+
+}
+
+
+.divregistro{
+  background: rgb(45, 66, 55);
+  opacity: 0.7;
+  margin-top: 10vh;
+  padding: 80px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+  width: 40%;
+
+}
+
+.divregistro input{
+  background: rgb(29, 44, 36);
+}
+
+
+.labelregistro{
+  text-decoration: none;
+  color: rgb(200, 200, 200);
+}
+
+.labelregistro:hover{
+  
+  color: rgb(124, 214, 63);
+}
 
 
 
@@ -49,6 +88,40 @@
   color: white;
 }
 
+
+.btn-confirmar{
+  border-radius: 5px;
+  margin-top: 25px;
+  width: 120px;
+  height: 35px;
+  background: none;
+  border: 1px solid white;
+  color: white;
+}
+
+.btn-verde{
+  border-radius: 5px;
+  margin-top: 25px;
+  width: 120px;
+  height: 35px;
+  background: none;
+  border: 1px solid white;
+  color: white;
+}
+
+
+
+.btn-verde:hover{
+  color: rgb(124, 214, 63);
+  border: 1px solid rgb(124, 214, 63);
+  box-shadow: 4px 2px 4px 4px #0c0c0c;
+
+
+
+}
+
+
+
 .btn-login:hover{
   color: rgb(161, 161, 0);
   border: 1px solid rgb(161, 161, 0);
@@ -58,8 +131,101 @@
 
 }
 
+.btn-confirmar:hover{
+  color: rgb(103, 184, 209);
+  border: 1px solid rgb(103, 184, 209);
+  box-shadow: 4px 2px 4px 4px #0c0c0c;
 
-body{
+
+
+}
+
+.grid-container-element { 
+  background: linear-gradient(to right, rgb(7, 7, 7), rgb(95,95,95));
+
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  grid-gap: 20px; 
+  border: 1px solid black; 
+  width: 100%; 
+
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+} 
+.grid-child-element { 
+  margin: 0px; 
+  position: justify;
+  background-image: url("https://wallpapercave.com/wp/wp10170995.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.portadaEvento { 
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/DB.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
+
+.contenedor{
+  margin-top: 15vh;
+  padding: 80px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+  width: 70%;
+  background: rgb(49, 49, 49);
+}
+.contenedor1{
+  margin-top: 10vh;
+  padding: 80px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+  width: 70%;
+  background: rgb(25, 44, 53);
+
+
+
+
+
+
+}
+
+.eventos{
+  /*background: rgb(113, 158, 172);*/
+  background-image: linear-gradient(rgb(37, 74, 85), rgb(157, 223, 245));
+    background-image: linear-gradient(to right, rgb(157, 223, 245),  rgb(37, 74, 85));
+    background-image: linear-gradient(rgb(70, 148, 161), rgb(40, 91, 100), rgb(150, 197, 206));
+
+  
+
+
+
+}
+.portada{
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+
+
   position: justify;
   background-image: url("https://images.hdqwalls.com/wallpapers/soccer-players-football-4k-q3.jpg");
   background-color: #cccccc;
@@ -68,6 +234,30 @@ body{
 
 
 }
+
+.portadaRegistro{
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+
+
+  position: justify;
+  background-image: url("https://img5.goodfon.com/wallpaper/nbig/a/b2/4k-uhd-background-blur-bokeh-football-ball-football-ball-soc.jpg");
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+}
+
+
+
 
 
 
@@ -109,4 +299,50 @@ body{
 
 .read-the-docs {
   color: #888;
+}
+
+
+@media (max-width: 1050px){
+  .login1{
+    width: 80%;
+    padding: 15px;
+    padding-top: 55px;
+    padding-bottom: 80px;
+  }
+
+  .divregistro{
+    width: 80%;
+    padding: 25px;
+    padding-top: 55px;
+    padding-bottom: 80px;
+  }
+
+
+
+  .grid-child-element, .portadaEvento{
+    display: none;
+  }
+
+  .contenedor, .contenedor1{
+    width: 90%;
+    height: 90%;
+  }
+  .grid-container-element { 
+  display: block; 
+  grid-template-columns: 1fr; 
+  grid-gap: 0px; 
+  border: 1px solid black; 
+  width: 100%; 
+
+  position:fixed;
+  padding-bottom: 50px;
+  margin:0;
+
+  top:0;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+  }
+
 }
