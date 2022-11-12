@@ -51,7 +51,10 @@ async function confirmarTorneo(credentials){
     body: JSON.stringify(credentials)
       
   }
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Torneo`, settings);
+  console.log(JSON.stringify(credentials));
+
+
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarTorneo`, settings);
   if(await response.json()){
 
     localStorage.setItem('nuevotorneoalert', '1');
@@ -109,9 +112,10 @@ export const AltaTorneo = () => {
   const handleSubmit = async (e) => {
       e.preventDefault();
       NuevoTorneo({
-        Nombre:Nombre,
-        FechaInicio:FechaInicio,
-        FechaFin:FechaFin
+        id:0,
+        nombre:Nombre,
+        fechaInicio:FechaInicio,
+        fechaFin:FechaFin
 
 
       })

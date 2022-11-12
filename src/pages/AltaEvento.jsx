@@ -1,23 +1,54 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 
 async function NuevoEvento(credentials) {
+
+  
+        Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: 'Estás seguro?',
+        text: "Se creará un nuevo evento!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'rgb(103, 184, 209)',
+        cancelButtonColor: 'rgb(70,0,0)',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, confirmar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          confirmarEvento(credentials);
+        }
+      })
+    
+    
+    //console.log(await response.json());
+  
+  }
+  
+
+  async function confirmarEvento(credentials){
     const settings = {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: new URLSearchParams({
-            EquipoLocal:credentials.EquipoLocal,
-            EquipoVisitante:credentials.EquipoVisitante,
-            FechaHora:credentials.FechaHora,
-            Torneo:credentials.Torneo
-        })
+      method: 'POST',
+      headers: {
+          "Content-Type":"application/json"
+      },
+      body: JSON.stringify(credentials)
+        
     }
-    fetch('http://localhost:8090/Java2022_war_exploded/Prueba/altaContenido', settings);
-   
-}
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Evento`, settings);
+    if(await response.json()){
+  
+      localStorage.setItem('nuevoeventoalert', '1');
+      window.location.reload();
+      
+     
+    }
+  }
+
+
+
 
 export const AltaEvento = () => {
     const [EquipoLocal, setEquipoLocal] = useState();
@@ -43,8 +74,12 @@ export const AltaEvento = () => {
         <div className="grid-container-element eventos">
             <div className='portadaEvento'>
 
+
+            <a href="/home"><button className='btn-back' style={{fontSize: '20px', float: 'left', cursor:'pointer'}} >🡄 Back</button></a>
+
             </div>
             <div>
+
                 <form onSubmit={handleSubmit}>
 
                     <div className='contenedor1 center'>
@@ -60,7 +95,7 @@ export const AltaEvento = () => {
 
                         <label htmlFor="" style={{ marginTop: '30px', float: 'left', color: 'rgb(200,200,200)' }}>Torneo</label>
                         <select type="text" className='form-control' onChange={e => setTorneo(e.target.value)} style={{ background: 'none', color: 'rgb(200,200,200)' }}>
-                            <option value="">Seleccione una opción</option>
+                            <option value="1">Mundial</option>
                         </select>
 
 

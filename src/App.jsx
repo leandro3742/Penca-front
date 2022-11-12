@@ -29,7 +29,8 @@ function App() {
 
   return (
     <div>
-      <Navegacion>
+      <Navegacion>    </Navegacion>
+
 
       
     <>
@@ -48,7 +49,6 @@ function App() {
   
   
     </>
-    </Navegacion>
     </div>
   )
 }

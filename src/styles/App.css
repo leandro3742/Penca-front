@@ -39,7 +39,7 @@
 
 
 .login1{
-  background: rgb(45, 66, 55);
+  background: rgb(39, 56, 47);
   opacity: 0.7;
   margin-top: 18vh;
   padding: 80px;
@@ -51,7 +51,7 @@
 
 
 .divregistro{
-  background: rgb(45, 66, 55);
+  background: rgb(39, 56, 47);
   opacity: 0.7;
   margin-top: 10vh;
   padding: 80px;
@@ -63,6 +63,7 @@
 
 .divregistro input{
   background: rgb(29, 44, 36);
+  color: rgb(200,200,200);
 }
 
 
@@ -98,6 +99,19 @@
   border: 1px solid white;
   color: white;
 }
+.btn-back{
+  margin-left: 20px;
+  border-radius: 5px;
+  margin-top: 25px;
+  width: 120px;
+  height: 35px;
+  background: rgb(103, 184, 209);
+  border: 2px solid rgb(103, 184, 209);
+  color: black;
+}
+
+
+
 
 .btn-verde{
   border-radius: 5px;
@@ -108,6 +122,10 @@
   border: 1px solid white;
   color: white;
 }
+
+
+
+
 
 
 
@@ -138,6 +156,12 @@
 
 
 
+}
+
+
+.btn-back:hover{
+  border: 1px solid rgb(103, 184, 209);
+  box-shadow: 4px 2px 4px 4px #0c0c0c;
 }
 
 .grid-container-element { 
@@ -324,6 +348,7 @@
   }
 
   .contenedor, .contenedor1{
+    margin-top: 3vh;
     width: 90%;
     height: 90%;
   }
