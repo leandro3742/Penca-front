@@ -40,7 +40,8 @@ function App() {
           <Route path="/AltaTorneo" element={<AltaTorneo />} />
           <Route path="/AltaEvento" element={<AltaEvento />} />
           <Route path="/Registro" element={<Registro />} />
-
+          <Route path="/AltaPencaEmpresarial" element={<Registro />} />
+          <Route path="/AltaPencaCompartida" element={<Registro />} />
 
 
       </Routes>
