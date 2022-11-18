@@ -28,6 +28,7 @@
   background: rgb(212, 11, 11);
 }
 
+
 .login{
   margin-top: 15vh;
   padding: 80px;
@@ -75,6 +76,19 @@
 .labelregistro:hover{
   
   color: rgb(124, 214, 63);
+}
+
+
+.btnver{
+  border-radius: 5px;
+  border: 1px solid grey;
+  color: grey;
+  background: none;
+}
+
+.btnver:hover{
+  border: 1px solid white;
+  color: white;
 }
 
 
@@ -183,6 +197,27 @@
   width: 100%;
   height: 100%;
 } 
+
+
+.grid-container-element1 { 
+  background: linear-gradient(to right, rgb(7, 7, 7), rgb(95,95,95));
+
+  display: grid; 
+  grid-template-columns: 1fr; 
+  grid-gap: 20px; 
+  border: 1px solid black; 
+  width: 60%; 
+
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+} 
 .grid-child-element { 
   margin: 0px; 
   position: justify;
@@ -201,8 +236,55 @@
   background-size: cover;
 }
 
+.alfrente{
+  z-index: 1;
+}
 
 
+.listatorneosfondo{
+  
+  background-image: linear-gradient(rgb(44, 122, 158), rgb(13, 52, 126));
+
+}
+
+
+
+.tabla{
+  margin-top: 90px;
+  width: 100%;
+  max-height: 15px;
+  overflow: auto;
+
+}
+
+
+.conttable{
+  height: 15px;
+}
+
+
+.portadaPenca { 
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/suarez.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.pencasFondo{
+    background-image: linear-gradient(rgb(11, 93, 131), rgb(87, 135, 224), rgb(37, 67, 124));
+    background-image: linear-gradient(rgb(44, 122, 158), rgb(13, 52, 126));
+
+}
+
+.barra{
+  z-index: 1;
+}
+nav{
+  background: red;
+  color: green;
+}
 
 .contenedor{
   margin-top: 15vh;
@@ -213,12 +295,15 @@
   background: rgb(49, 49, 49);
 }
 .contenedor1{
-  margin-top: 10vh;
+  margin-top: 15vh;
   padding: 80px;
   border-radius: 5px;
   box-shadow: 4px 2px 4px 4px #252525;
   width: 70%;
   background: rgb(25, 44, 53);
+
+  margin: 13% auto;
+  
 
 
 

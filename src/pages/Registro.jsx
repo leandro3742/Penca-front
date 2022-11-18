@@ -66,6 +66,15 @@ async function confirmarRegistro(credentials){
       window.location.reload();
   
      
+    }else{
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: 'Ha ocurrido un error, vuelva a intentarlo.',
+        icon: "error",
+        button: false,
+        timer:3000
+    });
     }
     
     console.log(JSON.stringify(credentials));
@@ -126,10 +135,12 @@ export const Registro = () => {
                 <input type="text" name='apellido' id="apellido" onChange={e => setApellido(e.target.value)} placeholder='Ingrese su apellido' className='form-control' /> <br />
 
                 <label htmlFor="" style={{marginTop: '0px', float: 'left', color: 'rgb(200,200,200)'}}>Correo</label>
-                <input type="text" name='email' id="email" onChange={e => setEmail(e.target.value)} placeholder='Ingrese su correo' className='form-control' /> <br />
+                <input type="text" name='email' id="email" onChange={e => setEmail(e.target.value)} placeholder='Ingrese su correo (user@example.com)' className='form-control' /> <br />
 
                 <label htmlFor="" style={{marginTop: '0px', float: 'left', color: 'rgb(200,200,200)'}}>Contraseña</label>
-                <input type="password" name='pass' id="pass" onChange={e => setPass(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' /> <br />
+                <input type="password" name='pass' id="pass" onChange={e => setPass(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
+                <label htmlFor="" style={{fontSize: '11px', marginTop: '0px', float: 'left', color: 'rgb(150,150,150)'}}>La contraseña debe contener al menos una mayúscula, una minúscula, un número y un caracter alfanumérico.</label> <br />
+                
                 
                 <input type="submit" className='btn-verde' value="Registrarse" />
 

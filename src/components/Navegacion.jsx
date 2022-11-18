@@ -3,28 +3,38 @@ import React from 'react'
 export const Navegacion = (props) => {
     return (
         <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="#">Navbar</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav">
-                    <li className="nav-item active">
-                        <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Features</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link disabled" href="#">Disabled</a>
-                    </li>
+            <label className="navbar-brand" style={{marginLeft: '20px'}} href="#">PencaNet</label>
+
+            <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/altatorneo">Torneos</a>
+                </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/altapencaempresarial">Pencas Empresariales</a>
+                </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/altaevento">Pencas Compartidas</a>
+                </li>
+                
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/altaevento">Nuevo Evento</a>
+                </li>
+               
                 </ul>
+            
             </div>
-        </nav> 
+            
+            </nav>
+            
+        
         {props.children}
         </>
     )

@@ -35,13 +35,15 @@ async function NuevoEvento(credentials) {
   
     response = await response.json();
 
+    //console.log(response[0]['nombre']);
+
 
 
 
     for(let i = 0; i < response.length; i++){
       let t = document.getElementById('torneos');
       var opt = document.createElement('option');
-      opt.value = response[i]['nombre'];
+      opt.value = response[i]['id'];
       opt.innerHTML = response[i]['nombre'];
       t.appendChild(opt); 
     }
@@ -63,7 +65,6 @@ async function confirmarEvento(credentials){
       
   }
   console.log(JSON.stringify(credentials));
-
 
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarEvento`, settings);
   if(await response.json()){
@@ -138,7 +139,7 @@ getTorneo();
         golesEquipo1:"",
         golesEquipo2:"",
         resultado:"",
-        nombre_torneo:Torneo
+        torneo:Torneo
 
 
 
@@ -150,7 +151,6 @@ getTorneo();
             <div className='portadaEvento'>
 
 
-            <a href="/home"><button className='btn-back' style={{fontSize: '20px', float: 'left', cursor:'pointer'}} >🡄 Back</button></a>
 
             </div>
             <div>

@@ -7,7 +7,13 @@ import { Navegacion } from './components/Navegacion';
 import Login from './pages/login';
 import { AltaTorneo } from './pages/altaTorneo';
 import { AltaEvento } from './pages/AltaEvento';
+import { AltaPenca } from './pages/AltaPenca';
+
 import { Registro } from './pages/Registro';
+import { AltaPencaCompartida } from './pages/AltaPencaCompartida';
+import { AltaPencaEmpresarial } from './pages/AltaPencaEmpresarial';
+import { ListaTorneos } from './pages/ListaTorneos';
+
 
 // async function fetchA(){
 //   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}WeatherForecast`)
@@ -41,6 +47,16 @@ function App() {
           <Route path="/AltaTorneo" element={<AltaTorneo />} />
           <Route path="/AltaEvento" element={<AltaEvento />} />
           <Route path="/Registro" element={<Registro />} />
+          <Route path="/AltaPenca" element={<AltaPenca />} />
+          <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
+          <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
+          <Route path="/listaTorneos" element={<ListaTorneos />} />
+
+        
+
+
+
+
 
 
 
