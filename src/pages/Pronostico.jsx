@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 
 
-async function UpdateEvento(credentials) {
+async function UpdatePronostico(credentials) {
 
   const settings = {
     method: 'PUT',
@@ -19,7 +19,7 @@ async function UpdateEvento(credentials) {
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarEvento`, settings);
   if(await response.json()){
 
-    localStorage.setItem('actualizareventosalert', '1');
+    localStorage.setItem('pronosticoalert', '1');
     window.location.reload();
     
    
@@ -32,7 +32,7 @@ async function UpdateEvento(credentials) {
 
 
 
-async function confirmarEvento(credentials){
+async function confirmarPronostico(credentials){
   
   document.querySelectorAll("#idequipo").forEach(div => {
     //alert(div.value);
@@ -65,7 +65,7 @@ async function confirmarEvento(credentials){
 
 
     
-    UpdateEvento({
+    UpdatePronostico({
       id:ideq,
       equipo1:eq1,
       equipo2:eq2,
@@ -267,7 +267,7 @@ async function getEventos(idTorneo) {
   }
 
 
-export const ListaEventos = () => {
+export const Pronostico = () => {
 
 
     
@@ -276,17 +276,17 @@ export const ListaEventos = () => {
     getTorneo();
     //getEventos();
 
-    if(localStorage.getItem("actualizareventosalert") !== null){
+    if(localStorage.getItem("pronosticoalert") !== null){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado los eventos correctamente!",
+        title: "Se han actualizado pronostico correctamente!",
         icon: "success",
         button: false,
         timer:3000
     });
   
-    localStorage.removeItem('actualizareventosalert');
+    localStorage.removeItem('pronosticoalert');
     }
     
     //getTorneo();
@@ -300,8 +300,8 @@ export const ListaEventos = () => {
     Swal.fire({
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
-      title: 'Estás seguro?',
-      text: "Se actualizarán los resultados de los eventos modificados",
+      title: 'Warning!',
+      text: "Seguro que deseas confirmar estos pronósticos?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(103, 184, 209)',
@@ -310,7 +310,7 @@ export const ListaEventos = () => {
       confirmButtonText: 'Si, confirmar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        confirmarEvento();
+        confirmarPronostico();
       }
     })
   
@@ -328,7 +328,7 @@ export const ListaEventos = () => {
             <option value="">Seleccione un torneo</option>
         </select>
         
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Actualizar Resultados"/>
+        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Confirmar Pronosticos"/>
         
         
         

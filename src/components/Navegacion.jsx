@@ -12,7 +12,7 @@ export const Navegacion = (props) => {
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li style={{marginLeft: '30px'}} className="nav-item active">
-                    <a className="nav-link" href="/altatorneo">Torneos</a>
+                    <a className="nav-link" href="/listaeventos">Torneos</a>
                 </li>
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
@@ -26,6 +26,10 @@ export const Navegacion = (props) => {
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
                     <a className="nav-link" href="/altaevento">Nuevo Evento</a>
+                </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/altatorneo">Nuevo Torneo</a>
                 </li>
                
                 </ul>

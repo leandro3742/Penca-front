@@ -496,6 +496,11 @@ nav{
     
   }
 
+  .floatleft{
+    float: left;
+  }
+
+
   .labelcuadros{
     color: rgb(200,200,200);
     font-weight: normal;

@@ -14,6 +14,8 @@ import { AltaPencaCompartida } from './pages/AltaPencaCompartida';
 import { AltaPencaEmpresarial } from './pages/AltaPencaEmpresarial';
 import { ListaTorneos } from './pages/ListaTorneos';
 import { ListaEventos } from './pages/ListaEventos';
+import { Pronostico } from './pages/Pronostico';
+
 
 
 // async function fetchA(){
@@ -53,6 +55,8 @@ function App() {
           <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
           <Route path="/listaTorneos" element={<ListaTorneos />} />
           <Route path="/listaEventos" element={<ListaEventos />} />
+          <Route path="/Pronostico" element={<Pronostico />} />
+
 
 
         
