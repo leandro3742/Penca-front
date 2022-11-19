@@ -20,7 +20,7 @@ export const Navegacion = (props) => {
                 </li>
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
-                    <a className="nav-link" href="/altaevento">Pencas Compartidas</a>
+                    <a className="nav-link" href="/altapencacompartida">Pencas Compartidas</a>
                 </li>
                 
 

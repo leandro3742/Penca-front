@@ -188,15 +188,23 @@
   width: 100%; 
 
   position:fixed;
+  overflow-y:scroll;
   padding:0;
   margin:0;
 
-  top:0;
+  top:50;
   left:0;
 
   width: 100%;
   height: 100%;
 } 
+
+
+.colores{
+  
+  background-image: linear-gradient(rgb(44, 122, 158), rgb(19, 80, 116));
+
+}
 
 
 .grid-container-element1 { 
@@ -217,6 +225,7 @@
   margin: 0 auto;
   width: 100%;
   height: 100%;
+  
 } 
 .grid-child-element { 
   margin: 0px; 
@@ -302,7 +311,62 @@ nav{
   width: 70%;
   background: rgb(25, 44, 53);
 
+
   margin: 13% auto;
+  
+
+
+
+
+
+
+}
+
+.arrows::-webkit-outer-spin-button,
+.arrows::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  .arrows[type=number] {
+      -moz-appearance: textfield;
+  }
+
+
+  .inputclass{
+    background: none;
+    width: 70px;
+    color: white;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
+    border-radius: 5px;
+    border: 1px solid white;
+    
+  }
+
+  .labelcuadros{
+    color: rgb(200,200,200);
+    font-size: '20px';
+    font-weight: bold;
+  }
+
+
+.resultados{
+  padding: 10px;
+  padding-bottom: 10px;
+
+  height: 200px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #252525;
+  width: 90%;
+  background: rgb(25, 44, 53);
+
+
+  margin: 5vh auto;
   
 
 
@@ -322,6 +386,10 @@ nav{
 
 
 
+}
+
+.res{
+  display: inline-block;
 }
 .portada{
   position:fixed;
@@ -412,6 +480,31 @@ nav{
 
 
 @media (max-width: 1050px){
+  .inputclass{
+    width: 30px;
+    color: white;
+    height: 30px;
+    font-size: 15px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
+    border-radius: 5px;
+    border: 1px solid white;
+
+    float: right;
+    
+  }
+
+  .labelcuadros{
+    color: rgb(200,200,200);
+    font-weight: normal;
+  }
+
+  .res{
+    margin-top: 20px;
+  }
+
   .login1{
     width: 80%;
     padding: 15px;

@@ -13,6 +13,7 @@ import { Registro } from './pages/Registro';
 import { AltaPencaCompartida } from './pages/AltaPencaCompartida';
 import { AltaPencaEmpresarial } from './pages/AltaPencaEmpresarial';
 import { ListaTorneos } from './pages/ListaTorneos';
+import { ListaEventos } from './pages/ListaEventos';
 
 
 // async function fetchA(){
@@ -34,7 +35,7 @@ function App() {
   // }, []);
 
   return (
-    <div>
+    <div style={{}}>
       <Navegacion>    </Navegacion>
 
 
@@ -51,6 +52,8 @@ function App() {
           <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
           <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
           <Route path="/listaTorneos" element={<ListaTorneos />} />
+          <Route path="/listaEventos" element={<ListaEventos />} />
+
 
         
 
