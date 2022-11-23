@@ -4,88 +4,21 @@ import Swal from 'sweetalert2';
 
 
 
-async function UpdatePronostico(credentials) {
-
-  const settings = {
-    method: 'PUT',
-    headers: {
-        "Content-Type":"application/json"
-    },
-    body: JSON.stringify(credentials)
-      
-  }
-  console.log(JSON.stringify(credentials));
-
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarEvento`, settings);
-  if(await response.json()){
-
-    localStorage.setItem('pronosticoalert', '1');
-    window.location.reload();
-    
-   
-
-  //document.getElementById('nombre').value = "";*/
-  }
-
-}
-//console.log(await response.json());
 
 
-
-async function confirmarPronostico(credentials){
+async function Participar(credentials){
   
-  document.querySelectorAll("#idequipo").forEach(div => {
-    //alert(div.value);
-    var ideq = div.value;
-
-    //var vareq1 = 'equipo1' + id;
-    var eq1 = document.getElementById('equipo1'+ideq).textContent;
-    var eq2 = document.getElementById('equipo2'+ideq).textContent;
-    var f = document.getElementById('f'+ideq).textContent;
-    var d = new Date(f);
-    f = d.toJSON();
-
-    var reseq1 = document.getElementById('resequipo1'+ideq).value;
-    var reseq2 = document.getElementById('resequipo2'+ideq).value;
-    var res = "";
-    var torneoid = document.getElementById('torneos').value;
-
-    if(reseq1 != "" && reseq2 != "" && reseq1 != null && reseq2 != null){
-      if(reseq1 == reseq2){
-        res = 'Empate';
-      }
-      if(reseq1 > reseq2){
-        res = eq1;
-      }
-
-      if(reseq1 < reseq2){
-        res = eq2;
-      }
-    }
-
-
+  localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
+  localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
+  window.location.href = "/participacionpenca";
     
-    UpdatePronostico({
-      id:ideq,
-      equipo1:eq1,
-      equipo2:eq2,
-      fechaHora:f,
-      golesEquipo1:reseq1,
-      golesEquipo2:reseq2,
-      resultado:res,
-      torneo:torneoid
+    
 
-
-
-
-    })
-
-  })
 }
 
 
 
-async function getEventosTorneo(idTorneo) {
+async function getEventosTorneo(idPenca) {
    /*var className = document.getElementsByClassName('borrar');
    for(var index=0;index < className.length;index++){
         alert(className.length + ' - ' + index);
@@ -96,24 +29,42 @@ async function getEventosTorneo(idTorneo) {
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
 
+
+
     document.querySelectorAll("#eventos").forEach(div => {
       div.remove("borrar");
       // Swap the text as well
       //div.textContent = "Class A";
     })
 
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
+    response = await response.json();
+
+    //console.log(response[0]['nombre']);
+
+
+     var idTorneo = -1;
+    for(let i = 0; i < response.length; i++){
+
+      if(response[i]['id'] == idPenca){
+        idTorneo = response[i]['torneo'];
+      }
+    }
+
         
     
     getEventos(idTorneo);
+
+
 
 }
 
 
 
-async function getTorneo(idTorneo) {
+async function getPencas(idTorneo) {
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarTorneos`);
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
     response = await response.json();
 
@@ -121,12 +72,23 @@ async function getTorneo(idTorneo) {
 
 
 
-
     for(let i = 0; i < response.length; i++){
-      let t = document.getElementById('torneos');
+      let t = document.getElementById('pencas');
       var opt = document.createElement('option');
       opt.value = response[i]['id'];
+      opt.id = response[i]['id'];
       opt.innerHTML = response[i]['nombre'];
+
+      
+      var idp = document.createElement("input");
+      idp.id = response[i]['nombre'];
+      idp.style.display = 'none';
+      idp.value = response[i]['id'];
+      document.getElementById('principal').appendChild(idp);
+
+
+
+
       t.appendChild(opt); 
     }
 
@@ -143,22 +105,16 @@ async function getEventos(idTorneo) {
   
     response = await response.json();
 
+    localStorage.setItem('torneo', idTorneo);
+
+
     //console.log(response[0]['nombre']);
 
 
 
 
     for(let i = 0; i < response.length; i++){
-      /*var principal = document.getElementById('principal');
-      var div = document.createElement('div');
-      var fecha = document.createElement('label');
-      fecha.style = "color: rgb(200,200,200); margin-bottom: 30px";
-      fecha.textContent = "asd";
-      t.appendChild(div); 
-
-
-      div.className('resultados');
-      t.appendChild(principal); */
+      
 
         var div = document.createElement("div");
         div.id = "eventos";
@@ -201,6 +157,8 @@ async function getEventos(idTorneo) {
         res1.id = 'resequipo1' + response[i]['id'];
         res1.classList = 'inputclass arrows borrar floatleft';
         res1.value = response[i]['golesEquipo1'];
+        res1.disabled = true;
+        res1.style = 'background: rgb(30,30,30)';
         div.appendChild(res1);
 
         var idevento = document.createElement("input");
@@ -222,6 +180,8 @@ async function getEventos(idTorneo) {
 
         var res2 = document.createElement("input");
         res2.placeholder = '-';
+        res2.disabled = true;
+        res2.style = 'background: rgb(30,30,30);'
         res2.id = 'resequipo2' + response[i]['id'];
         res2.classList = 'inputclass arrows borrar';
         res2.value = response[i]['golesEquipo2'];
@@ -267,26 +227,26 @@ async function getEventos(idTorneo) {
   }
 
 
-export const Pronostico = () => {
+export const VerPencas = () => {
 
 
     
  useEffect(()=>{
-    document.getElementById('torneos').empty;
-    getTorneo();
+    document.getElementById('pencas').empty;
+    getPencas(0);
     //getEventos();
 
-    if(localStorage.getItem("pronosticoalert") !== null){
+    if(localStorage.getItem("actualizareventosalert") !== null){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado pronostico correctamente!",
+        title: "Se han actualizado los eventos correctamente!",
         icon: "success",
         button: false,
         timer:3000
     });
   
-    localStorage.removeItem('pronosticoalert');
+    localStorage.removeItem('actualizareventosalert');
     }
     
     //getTorneo();
@@ -300,8 +260,8 @@ export const Pronostico = () => {
     Swal.fire({
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
-      title: 'Warning!',
-      text: "Seguro que deseas confirmar estos pronósticos?",
+      title: 'Solicitud de confirmación',
+      text: "Seguro que deseas participar en esta penca? por favor confirma para continuar",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(103, 184, 209)',
@@ -310,7 +270,7 @@ export const Pronostico = () => {
       confirmButtonText: 'Si, confirmar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        confirmarPronostico();
+        Participar();
       }
     })
   
@@ -323,19 +283,20 @@ export const Pronostico = () => {
         
     <div id="principal" className='grid-container-element colores' >
 
-        
-        <select id="torneos" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
-            <option value="">Seleccione un torneo</option>
+        <div>
+        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
+            <option value="">Seleccione una penca</option>
         </select>
+        </div>
+
+        <div>
+        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Participar"/>
+        </div>
         
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Confirmar Pronosticos"/>
-        
-        
-        
+
 
 
 
     </div>
-    
   )
 }

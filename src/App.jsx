@@ -15,6 +15,8 @@ import { AltaPencaEmpresarial } from './pages/AltaPencaEmpresarial';
 import { ListaTorneos } from './pages/ListaTorneos';
 import { ListaEventos } from './pages/ListaEventos';
 import { Pronostico } from './pages/Pronostico';
+import { VerPencas } from './pages/VerPencas';
+import { ParticipacionPenca } from './pages/ParticipacionPenca';
 
 
 
@@ -56,7 +58,8 @@ function App() {
           <Route path="/listaTorneos" element={<ListaTorneos />} />
           <Route path="/listaEventos" element={<ListaEventos />} />
           <Route path="/Pronostico" element={<Pronostico />} />
-
+          <Route path="/VerPencas" element={<VerPencas />} />
+          <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
 
 
         

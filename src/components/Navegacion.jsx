@@ -31,6 +31,10 @@ export const Navegacion = (props) => {
                 <li style={{marginLeft: '30px'}} className="nav-item active">
                     <a className="nav-link" href="/altatorneo">Nuevo Torneo</a>
                 </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/verpencas">Ver Pencas</a>
+                </li>
                
                 </ul>
             

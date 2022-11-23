@@ -145,7 +145,7 @@ async function confirmarPenca(credentials){
     console.log(response.status);
     console.log(response.json());
 
-    if(await response.json()){
+    if(await response){
   
       localStorage.setItem('nuevapencaalert', '1');
       window.location.reload();

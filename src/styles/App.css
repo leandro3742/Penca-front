@@ -501,6 +501,16 @@ nav{
   }
 
 
+  .resp{
+    display: none;
+  }
+
+  
+
+  .margi{
+    display: none;
+  }
+
   .labelcuadros{
     color: rgb(200,200,200);
     font-weight: normal;
