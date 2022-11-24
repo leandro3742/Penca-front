@@ -44,21 +44,22 @@ async function confirmarRegistro(credentials){
     body: JSON.stringify(credentials)
       
   }
-  console.log(JSON.stringify(credentials));
+  //console.log(JSON.stringify(credentials));
 
 
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/Register`, settings);
-  console.log(await response.status);
-  console.log(await response.json());
+  //console.log(await response.status);
+  var respuesta = await response.json();
+  console.log(respuesta['statusMessage']);
 
-    if(response.status == 400){
+    if(response.status != 200 || response.status != 201){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: 'Ha ocurrido un error, vuelva a intentarlo.',
+        title: 'Error!',
+        text: respuesta['statusMessage'],
         icon: "error",
-        button: false,
-        timer:3000
+        button: false
     });
     }else if(response.status == 200 || response.status == 201){
       
@@ -77,8 +78,8 @@ async function confirmarRegistro(credentials){
     });
     }
     
-    console.log(JSON.stringify(credentials));
-    console.log(response);
+    //console.log(JSON.stringify(credentials));
+    //console.log(response);
 
     
   

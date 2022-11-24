@@ -27,15 +27,18 @@ const fetchLogin = async (user, pass) => {
     Swal.fire({
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
-      text: 'Usuario y/o contrase;a incorrectos',
+      text: 'Usuario y/o contraseña incorrectos',
       icon: 'error',
       confirmButtonColor: 'rgb(103, 184, 209)',
       confirmButtonText: 'Ok'
     })
   }
   else{
+    if(document.getElementById('username').value != "" && document.getElementById('pass').value != ""){
+    window.location.href = "/";
     sessionStorage.setItem('username', response.email)
     sessionStorage.setItem('token', response.token)
+
     Swal.fire({
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
@@ -44,6 +47,16 @@ const fetchLogin = async (user, pass) => {
       confirmButtonColor: 'rgb(103, 184, 209)',
       confirmButtonText: 'Ok'
     })
+  }else{
+    Swal.fire({
+      background: 'rgb(40,40,40)',
+      color: 'rgb(200,200,200)',
+      text: 'Complete los campos por favor',
+      icon: 'error',
+      confirmButtonColor: 'rgb(103, 184, 209)',
+      confirmButtonText: 'Ok'
+    })
+  }
   }
 }
 
@@ -56,10 +69,10 @@ const Login = () => {
         <div className='center login1' style={{paddingBottom: '20px'}}>
         <h1 style={{color: 'white'}}>Iniciar Sesión</h1><br /><br />
 
-            <input type="text" onChange={(e)=>setUserName(e.target.value)} placeholder='Ingrese su correo' className='form-control' style={{}} /><br /><br />
-            <input type="text" onChange={(e)=>setPassword(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
+            <input id="username" type="text" onChange={(e)=>setUserName(e.target.value)} placeholder='Ingrese su correo' className='form-control' style={{}} /><br /><br />
+            <input id="pass" type="password" onChange={(e)=>setPassword(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
             <div className='d-flex flex-column justify-content-center align-items-center'>
-              <button className='btn-verde' style={{marginTop: '60px'}} onClick={()=> fetchLogin(userName, password)}>Login</button>
+              <button className='btn-verde' style={{marginTop: '60px'}} onClick={()=> fetchLogin(userName, password)}>Login</button><br />
               <a href="/registro" className='labelregistro'>Todavía no tienes una cuenta? Click aquí para registrarte!</a>
             </div>
 

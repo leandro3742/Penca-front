@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import Swal from 'sweetalert2';
+
+
+   async function logout(){
+    Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: 'Seguro que desea cerrar sesión?',
+        text: "Por favor confirma",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'rgb(103, 184, 209)',
+        cancelButtonColor: 'rgb(70,0,0)',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Cerrar Sesión'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          sessionStorage.removeItem('username');
+          sessionStorage.removeItem('token');
+
+          window.location.href = "/";
+
+        }
+      })
+   }
+
 
 export const Navegacion = (props) => {
+    var sesion = sessionStorage.getItem('username');
+    if(sesion != null && sesion != ""){
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <label className="navbar-brand" style={{marginLeft: '20px'}} href="#">PencaNet</label>
+            <a href="/" style={{cursor: 'pointer'}}><label className="navbar-brand" style={{marginLeft: '20px',cursor: 'pointer'}} href="">PencaNet</label></a>
 
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -35,15 +64,48 @@ export const Navegacion = (props) => {
                 <li style={{marginLeft: '30px'}} className="nav-item active">
                     <a className="nav-link" href="/verpencas">Ver Pencas</a>
                 </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <button onClick={e => logout(e.target.value)} className='btn-logout'>Cerrar Sesión ⇥</button>
+                </li>
+               
                
                 </ul>
             
             </div>
-            
+
+          
             </nav>
             
         
         {props.children}
         </>
     )
+    }else{
+        return (
+            <>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <a href="/" style={{cursor: 'pointer'}}><label className="navbar-brand" style={{marginLeft: '20px',cursor: 'pointer'}} href="">PencaNet</label></a>
+    
+                <div className="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarTogglerDemo03">
+                    <ul className="navbar-nav ml-auto">
+                    
+                    <li style={{marginLeft: '30px'}} className="nav-item active">
+                        <a className="nav-link" href="/login">Login</a>
+                    </li>
+                   
+                    </ul>
+                
+                </div>
+                
+                </nav>
+                
+            
+            {props.children}
+            </>
+        )
+    }
 }

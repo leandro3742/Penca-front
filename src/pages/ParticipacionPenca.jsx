@@ -21,7 +21,7 @@ async function UpdatePronostico(credentials){
 
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarPronostico`, settings);
 
-  alert(await response.status);
+  //alert(await response.status);
 
     if(await response.json()){
         localStorage.setItem('actualizareventosalert', '1');
@@ -68,9 +68,21 @@ async function getEventosTorneo(idPenca) {
 async function getEventos() {
     let response1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarTorneos`);
     response1 = await response1.json();
+    var tit = document.createElement("label");
+    tit.innerHTML = "Estos son tus pronósticos para:   ";
+    tit.style.color = 'rgb(200,200,200)';
+    tit.style.marginTop = '50px';
+    document.getElementById('primerdiv').appendChild(tit);
+
     for(let i = 0; i < response1.length; i++){
         if(response1[i]['id'] == localStorage.getItem('torneo')){
-            document.getElementById('titulo').textContent = response1[i]['nombre'];
+            //document.getElementById('titulo').textContent = response1[i]['nombre'];
+            var tit = document.createElement("label");
+            tit.innerHTML = response1[i]['nombre'];
+            tit.style.color = 'white';
+            tit.style.fontSize = '25px';
+            tit.style.marginTop = '50px';
+            document.getElementById('primerdiv').appendChild(tit);
         }
     }
 
@@ -84,6 +96,8 @@ async function getEventos() {
     response = await response.json();
 
     localStorage.setItem('torneo', idTorneo);
+    var user = sessionStorage.getItem('username');
+    var idpe = localStorage.getItem('idpenca');
 
 
     //console.log(response[0]['nombre']);
@@ -92,6 +106,7 @@ async function getEventos() {
 
     for(let i = 0; i < response.length; i++){
       
+        var eventoid = response[i]['id'];
 
         var div = document.createElement("div");
         div.id = "eventos";
@@ -134,7 +149,17 @@ async function getEventos() {
         res1.id = 'resequipo1' + response[i]['id'];
         res1.classList = 'inputclass arrows borrar floatleft';
         res1.type = 'number';
-        //res1.value = response[i]['golesEquipo1'];
+
+        let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=`+user+`&id_Penca=`+idpe);
+        //let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=facundo@bunker360.com&id_Penca=1`);
+
+        pronostico = await pronostico.json();
+        for(let x = 0; x < pronostico.length; x++){
+          if(pronostico[x]['id_Evento'] == eventoid){
+            res1.value = pronostico[x]['golesEquipo1'];
+          }
+        }
+          //res1.value = response[i]['golesEquipo1'];
         res1.style = 'background: rgb(30,30,30)';
         div.appendChild(res1);
 
@@ -168,6 +193,12 @@ async function getEventos() {
         res2.style = 'background: rgb(30,30,30);'
         res2.id = 'resequipo2' + response[i]['id'];
         res2.classList = 'inputclass arrows borrar';
+
+        for(let x = 0; x < pronostico.length; x++){
+          if(pronostico[x]['id_Evento'] == eventoid){
+            res2.value = pronostico[x]['golesEquipo2'];
+          }
+        }
         //res2.value = response[i]['golesEquipo2'];
         div.appendChild(res2);
 
@@ -199,6 +230,7 @@ async function getEventos() {
         if(response[i]['resultado'] == ""){
             fin.style.visibility = 'hidden';
         }else{
+          //esto es provisorio, deberia poner como medida el horario del partido
             res1.readOnly = true;
             res2.readOnly = true;
         }
@@ -228,25 +260,35 @@ async function getEventos() {
       var reseq1 = document.getElementById('resequipo1'+ideq).value;
       var reseq2 = document.getElementById('resequipo2'+ideq).value;
       var penca = localStorage.getItem('idpenca');
+      var username = sessionStorage.getItem('username');
+
 
   
-      
+      if(username != null && username != ""){
   
   
       
       UpdatePronostico({
         golesEquipo1:reseq1,
         golesEquipo2:reseq2,
-        username:'facu_camilo@hotmail.com',
+        username:username,
         id_Evento:ideq,
         id_Penca:penca,
         esCompartida:true
   
-  
-  
-  
+
       })
 
+    }else{
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "No se econtró usuario logueado!",
+        icon: "error",
+        button: false,
+        timer:3000
+    });
+    }
   
     })
   }
@@ -311,9 +353,10 @@ export const ParticipacionPenca = () => {
         
         
         
-        <div className='resp'>
+        <div id="primerdiv" className='resp'>
             
         <h2 id="titulo" style={{color: 'white', marginTop: '50px', float: 'left', marginLeft: '50px'}}></h2>
+
         </div>
                 
 
