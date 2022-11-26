@@ -52,7 +52,7 @@ async function confirmarRegistro(credentials){
   var respuesta = await response.json();
   console.log(respuesta['statusMessage']);
 
-    if(response.status != 200 || response.status != 201){
+    if(response.status != 200 && response.status != 201){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
@@ -61,21 +61,12 @@ async function confirmarRegistro(credentials){
         icon: "error",
         button: false
     });
-    }else if(response.status == 200 || response.status == 201){
+    }else{
       
       localStorage.setItem('registroalert', '1');
       window.location.reload();
   
      
-    }else{
-      Swal.fire({
-        background: 'rgb(40,40,40)',
-        color: 'rgb(200,200,200)',
-        title: 'Ha ocurrido un error, vuelva a intentarlo.',
-        icon: "error",
-        button: false,
-        timer:3000
-    });
     }
     
     //console.log(JSON.stringify(credentials));

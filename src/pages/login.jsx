@@ -36,8 +36,10 @@ const fetchLogin = async (user, pass) => {
   else{
     if(document.getElementById('username').value != "" && document.getElementById('pass').value != ""){
     window.location.href = "/";
-    sessionStorage.setItem('username', response.email)
-    sessionStorage.setItem('token', response.token)
+    sessionStorage.setItem('username', response.email);
+    sessionStorage.setItem('token', response.token);
+    sessionStorage.setItem('f5', 'recargar');
+
 
     Swal.fire({
       background: 'rgb(40,40,40)',
