@@ -100,7 +100,7 @@ export const AltaPencaEmpresarial = () => {
 
   const Link = "";
   const [Nombre, setNombre] = useState();
-  const Usuario = "facu_camilo@hotmail.com";
+  const Usuario = sessionStorage.getItem('username');
   const [Torneo, setTorneo] = useState();
     
 useEffect(()=>{

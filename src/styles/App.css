@@ -203,6 +203,13 @@
 .colores{
   
   background-image: linear-gradient(rgb(44, 122, 158), rgb(19, 80, 116));
+  
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/fondopenca.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
 
 }
 
@@ -325,6 +332,7 @@
     background-image: linear-gradient(rgb(11, 93, 131), rgb(87, 135, 224), rgb(37, 67, 124));
     background-image: linear-gradient(rgb(44, 122, 158), rgb(13, 52, 126));
 
+
 }
 
 .barra{
@@ -401,9 +409,12 @@ nav{
 
   height: 200px;
   border-radius: 5px;
-  box-shadow: 4px 2px 4px 4px #252525;
+  box-shadow: 4px 2px 4px 4px #2b0d0d;
   width: 90%;
-  background: rgb(25, 44, 53);
+  background: linear-gradient(rgb(82, 5, 5), rgb(36, 0, 0));
+  background: linear-gradient(rgb(85, 0, 25), rgb(43, 3, 31));
+
+
 
 
   margin: 5vh auto;
@@ -427,6 +438,17 @@ nav{
 
 
 }
+.divselect{
+  border: 2px solid rgb(53, 0, 0);
+  margin-top: 50px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+  box-shadow: 4px 2px 4px 4px #1b0000;
+  
+
+
+}
+
 
 .res{
   display: inline-block;

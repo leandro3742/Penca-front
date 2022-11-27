@@ -162,8 +162,8 @@ async function getEventos(idTorneo) {
 
         var div = document.createElement("div");
         div.id = "eventos";
-        var fecha = document.createElement("label");
-        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + new Date(response[i]['fechaHora']).getMonth() + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
+        var fecha = document.createElement("label"); var mont = new Date(response[i]['fechaHora']).getMonth() + 1;
+        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + mont + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
         fecha.style.color = "rgb(200,200,200)";
         fecha.style.marginBottom = '30px';
         fecha.id = 'fecha' + response[i]['id'];
