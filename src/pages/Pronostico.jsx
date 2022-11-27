@@ -4,10 +4,13 @@ import Swal from 'sweetalert2';
 
 
 
-async function UpdatePronostico(credentials) {
 
-  const settings = {
-    method: 'PUT',
+async function UpdatePronostico(credentials){
+    //console.log(JSON.stringify(credentials));
+ // localStorage.setItem('penca', document.getElementById(document.getElementById('pencas').value).value);
+
+ const settings = {
+    method: 'POST',
     headers: {
         "Content-Type":"application/json"
     },
@@ -16,76 +19,22 @@ async function UpdatePronostico(credentials) {
   }
   console.log(JSON.stringify(credentials));
 
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarEvento`, settings);
-  if(await response.json()){
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarPronostico`, settings);
 
-    localStorage.setItem('pronosticoalert', '1');
-    window.location.reload();
-    
-   
+  //alert(await response.status);
 
-  //document.getElementById('nombre').value = "";*/
-  }
-
-}
-//console.log(await response.json());
-
-
-
-async function confirmarPronostico(credentials){
-  
-  document.querySelectorAll("#idequipo").forEach(div => {
-    //alert(div.value);
-    var ideq = div.value;
-
-    //var vareq1 = 'equipo1' + id;
-    var eq1 = document.getElementById('equipo1'+ideq).textContent;
-    var eq2 = document.getElementById('equipo2'+ideq).textContent;
-    var f = document.getElementById('f'+ideq).textContent;
-    var d = new Date(f);
-    f = d.toJSON();
-
-    var reseq1 = document.getElementById('resequipo1'+ideq).value;
-    var reseq2 = document.getElementById('resequipo2'+ideq).value;
-    var res = "";
-    var torneoid = document.getElementById('torneos').value;
-
-    if(reseq1 != "" && reseq2 != "" && reseq1 != null && reseq2 != null){
-      if(reseq1 == reseq2){
-        res = 'Empate';
-      }
-      if(reseq1 > reseq2){
-        res = eq1;
-      }
-
-      if(reseq1 < reseq2){
-        res = eq2;
-      }
+    if(await response.json()){
+        localStorage.setItem('actualizareventosalert', '1');
+        window.location.reload();
+        
     }
-
-
     
-    UpdatePronostico({
-      id:ideq,
-      equipo1:eq1,
-      equipo2:eq2,
-      fechaHora:f,
-      golesEquipo1:reseq1,
-      golesEquipo2:reseq2,
-      resultado:res,
-      torneo:torneoid
 
-
-
-
-    })
-
-  })
 }
 
 
 
-async function getEventosTorneo(idTorneo) {
+async function getEventosTorneo(idPenca) {
    /*var className = document.getElementsByClassName('borrar');
    for(var index=0;index < className.length;index++){
         alert(className.length + ' - ' + index);
@@ -96,74 +45,73 @@ async function getEventosTorneo(idTorneo) {
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
 
+
+
     document.querySelectorAll("#eventos").forEach(div => {
       div.remove("borrar");
       // Swap the text as well
       //div.textContent = "Class A";
     })
 
-  
+    
+
         
     
-    getEventos(idTorneo);
+    getEventos();
+
+
 
 }
 
-
-
-async function getTorneo(idTorneo) {
-
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarTorneos`);
   
-    response = await response.json();
 
-    //console.log(response[0]['nombre']);
+async function getEventos() {
+    let response1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarTorneos`);
+    response1 = await response1.json();
+    var tit = document.createElement("label");
+    tit.innerHTML = "Estos son tus pronósticos para:   ";
+    tit.style.color = 'rgb(200,200,200)';
+    tit.style.marginTop = '50px';
+    document.getElementById('primerdiv').appendChild(tit);
 
-
-
-
-    for(let i = 0; i < response.length; i++){
-      let t = document.getElementById('torneos');
-      var opt = document.createElement('option');
-      opt.value = response[i]['id'];
-      opt.innerHTML = response[i]['nombre'];
-      t.appendChild(opt); 
+    for(let i = 0; i < response1.length; i++){
+        if(response1[i]['id'] == localStorage.getItem('torneo')){
+            //document.getElementById('titulo').textContent = response1[i]['nombre'];
+            var tit = document.createElement("label");
+            tit.innerHTML = response1[i]['nombre'];
+            tit.style.color = 'white';
+            tit.style.fontSize = '25px';
+            tit.style.marginTop = '50px';
+            document.getElementById('primerdiv').appendChild(tit);
+        }
     }
 
-   
-  }
 
 
 
-  
 
-async function getEventos(idTorneo) {
-
+    var idTorneo = localStorage.getItem('torneo');
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEventosTorneo?id=`+idTorneo);
   
     response = await response.json();
 
+    localStorage.setItem('torneo', idTorneo);
+    var user = sessionStorage.getItem('username');
+    var idpe = localStorage.getItem('idpenca');
+
+
     //console.log(response[0]['nombre']);
 
 
 
-
     for(let i = 0; i < response.length; i++){
-      /*var principal = document.getElementById('principal');
-      var div = document.createElement('div');
-      var fecha = document.createElement('label');
-      fecha.style = "color: rgb(200,200,200); margin-bottom: 30px";
-      fecha.textContent = "asd";
-      t.appendChild(div); 
-
-
-      div.className('resultados');
-      t.appendChild(principal); */
+      
+        var eventoid = response[i]['id'];
 
         var div = document.createElement("div");
         div.id = "eventos";
-        var fecha = document.createElement("label");
-        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + new Date(response[i]['fechaHora']).getMonth() + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
+        var fecha = document.createElement("label"); var mes = new Date(response[i]['fechaHora']).getMonth() + 1; 
+        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + mes + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
         fecha.style.color = "rgb(200,200,200)";
         fecha.style.marginBottom = '30px';
         fecha.id = 'fecha' + response[i]['id'];
@@ -200,7 +148,19 @@ async function getEventos(idTorneo) {
         res1.placeholder = '-';
         res1.id = 'resequipo1' + response[i]['id'];
         res1.classList = 'inputclass arrows borrar floatleft';
-        res1.value = response[i]['golesEquipo1'];
+        res1.type = 'number';
+
+        let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=`+user+`&id_Penca=`+idpe);
+        //let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=facundo@bunker360.com&id_Penca=1`);
+
+        pronostico = await pronostico.json();
+        for(let x = 0; x < pronostico.length; x++){
+          if(pronostico[x]['id_Evento'] == eventoid){
+            res1.value = pronostico[x]['golesEquipo1'];
+          }
+        }
+          //res1.value = response[i]['golesEquipo1'];
+        res1.style = 'background: rgb(30,30,30)';
         div.appendChild(res1);
 
         var idevento = document.createElement("input");
@@ -212,6 +172,13 @@ async function getEventos(idTorneo) {
         div.appendChild(idevento);
 
 
+       var idev = document.createElement("input");
+        //idevento.id = 'idequipo' + response[i]['id'];
+        idev.id = 'idev' + i;
+        idev.value = response[i]['id'];
+        idev.style.display = 'none';
+        div.appendChild(idev);
+
         var vs = document.createElement("label");
         vs.innerHTML = "  VS  ";
         vs.style.color = "grey";
@@ -222,9 +189,17 @@ async function getEventos(idTorneo) {
 
         var res2 = document.createElement("input");
         res2.placeholder = '-';
+        res2.type = 'number';
+        res2.style = 'background: rgb(30,30,30);'
         res2.id = 'resequipo2' + response[i]['id'];
         res2.classList = 'inputclass arrows borrar';
-        res2.value = response[i]['golesEquipo2'];
+
+        for(let x = 0; x < pronostico.length; x++){
+          if(pronostico[x]['id_Evento'] == eventoid){
+            res2.value = pronostico[x]['golesEquipo2'];
+          }
+        }
+        //res2.value = response[i]['golesEquipo2'];
         div.appendChild(res2);
 
 
@@ -246,47 +221,121 @@ async function getEventos(idTorneo) {
 
 
         var fin = document.createElement("label");
-        fin.style.color = "grey";
+        fin.style.color = "rgb(85,85,85)";
         fin.style.marginTop = "30px";
 
-        fin.innerHTML = "Finalizado";
+        fin.innerHTML = 'Finalizado <br/>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
         fin.classList = 'borrar';
 
         if(response[i]['resultado'] == ""){
             fin.style.visibility = 'hidden';
+        }else{
+          //esto es provisorio, deberia poner como medida el horario del partido
+            res1.readOnly = true;
+            res2.readOnly = true;
+        }
+
+        var hoy = new Date();
+        var fp = new Date(response[i]['fechaHora']);
+
+        if(fp >= hoy){
+          if(fp == hoy){
+            if(fp.getHours() >= hoy.getHours()){
+              if(fp.getHours() == hoy.getHours()){
+                if(fp.getMinutes > hoy.getMinutes()){
+                  res1.readOnly = true;
+                  res2.readOnly = true;
+                }
+              }
+            }else{
+              res1.readOnly = true;
+              res2.readOnly = true;
+            }
+        }
+        }else{
+            res1.readOnly = true;
+            res2.readOnly = true;
         }
         div.appendChild(fin);
+        
 
 
         document.getElementById("principal").appendChild(div);
       
+       
 
     }
 
-   
+        
   }
+  async function altaPronostico(){
+  
+    document.querySelectorAll("#idequipo").forEach(div => {
+      //alert(div.value);
+      var ideq = div.value;
+  
+      //var vareq1 = 'equipo1' + id;
+      var f = document.getElementById('f'+ideq).textContent;
+      var d = new Date(f);
+      f = d.toJSON();
+  
+      var reseq1 = document.getElementById('resequipo1'+ideq).value;
+      var reseq2 = document.getElementById('resequipo2'+ideq).value;
+      var penca = localStorage.getItem('idpenca');
+      var username = sessionStorage.getItem('username');
 
+
+  
+      if(username != null && username != ""){
+  
+  
+      
+      UpdatePronostico({
+        golesEquipo1:reseq1,
+        golesEquipo2:reseq2,
+        username:username,
+        id_Evento:ideq,
+        id_Penca:penca,
+        esCompartida:true
+  
+
+      })
+
+    }else{
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "No se econtró usuario logueado!",
+        icon: "error",
+        button: false,
+        timer:3000
+    });
+    }
+  
+    })
+  }
+  
 
 export const Pronostico = () => {
 
 
     
  useEffect(()=>{
-    document.getElementById('torneos').empty;
-    getTorneo();
+    //UpdatePronostico();
+    getEventosTorneo(localStorage.getItem('idpenca'));
     //getEventos();
 
-    if(localStorage.getItem("pronosticoalert") !== null){
+    if(localStorage.getItem("actualizareventosalert") !== null){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado pronostico correctamente!",
+        title: "Se han actualizado los eventos correctamente!",
         icon: "success",
         button: false,
         timer:3000
     });
   
-    localStorage.removeItem('pronosticoalert');
+    localStorage.removeItem('actualizareventosalert');
     }
     
     //getTorneo();
@@ -300,8 +349,8 @@ export const Pronostico = () => {
     Swal.fire({
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
-      title: 'Warning!',
-      text: "Seguro que deseas confirmar estos pronósticos?",
+      title: 'Estás seguro?',
+      text: "Se guardarán/modificarán los pronósticos que has hecho",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(103, 184, 209)',
@@ -310,7 +359,7 @@ export const Pronostico = () => {
       confirmButtonText: 'Si, confirmar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        confirmarPronostico();
+        altaPronostico();
       }
     })
   
@@ -324,18 +373,21 @@ export const Pronostico = () => {
     <div id="principal" className='grid-container-element colores' >
 
         
-        <select id="torneos" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
-            <option value="">Seleccione un torneo</option>
-        </select>
-        
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Confirmar Pronosticos"/>
         
         
-        
+        <div id="primerdiv" className='resp'>
+            
+        <h2 id="titulo" style={{color: 'white', marginTop: '50px', float: 'left', marginLeft: '50px'}}></h2>
 
+        </div>
+                
+
+
+        <div className='resp1' style={{ }}>
+        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', float: 'right', marginRight: '50px'}} value="Confirmar Pronósticos"/>
+        </div>
 
 
     </div>
-    
   )
 }

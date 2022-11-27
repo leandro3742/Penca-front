@@ -7,10 +7,30 @@ import Swal from 'sweetalert2';
 
 
 async function Participar(credentials){
+
+  const settings = {
+    method: 'POST',
+    headers: {
+        "Content-Type":"application/json"
+    },
+    body: JSON.stringify(credentials)
+      
+  }
+  console.log(JSON.stringify(credentials));
+
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarUsuario`, settings);
+  if(await response.json()){
+
+    localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
+    localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
+    localStorage.setItem('alertparticipacion', '0');
+
+    window.location.href = "/participacionpenca";
+
+
+  }
   
-  localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
-  localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
-  window.location.href = "/participacionpenca";
+ 
     
     
 
@@ -28,7 +48,7 @@ async function getEventosTorneo(idPenca) {
    }*/
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
-
+    
 
 
     document.querySelectorAll("#eventos").forEach(div => {
@@ -118,8 +138,8 @@ async function getEventos(idTorneo) {
 
         var div = document.createElement("div");
         div.id = "eventos";
-        var fecha = document.createElement("label");
-        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + new Date(response[i]['fechaHora']).getMonth() + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
+        var fecha = document.createElement("label"); var me = new Date(response[i]['fechaHora']).getMonth() + 1;
+        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + me + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
         fecha.style.color = "rgb(200,200,200)";
         fecha.style.marginBottom = '30px';
         fecha.id = 'fecha' + response[i]['id'];
@@ -256,6 +276,7 @@ export const VerPencas = () => {
     //e.preventDefault();
 
     //var idev = document.getElementsByClassName('idequipo').length;
+    if(document.getElementById('pencas').value != ""){
 
     Swal.fire({
       background: 'rgb(40,40,40)',
@@ -270,12 +291,16 @@ export const VerPencas = () => {
       confirmButtonText: 'Si, confirmar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Participar();
+        Participar({
+          username:sessionStorage.getItem('username'),
+          id_Penca:document.getElementById('pencas').value,
+          esCompartida: true
+        });
       }
     })
   
 
-   
+  }
 }
 
 
@@ -284,13 +309,18 @@ export const VerPencas = () => {
     <div id="principal" className='grid-container-element colores' >
 
         <div>
-        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
-            <option value="">Seleccione una penca</option>
-        </select>
+          <h5 style={{float: 'left', marginLeft: '2vh', color: 'rgb(200,200,200)', marginTop: '50px', lineHeight: '40px'}}>Todas las pencas: </h5>
+          <div className='divselect'>
+            <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{display: 'inline-block', marginLeft: '15px', width: '450px', float: 'left', height: '40px', color: 'white', background: 'rgb(36, 61, 73)'}} >
+                <option value="">Seleccione una penca</option>
+            </select>
+            <input type="submit"  className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{display: 'inline-block', width: '150px', marginTop: '0px', marginLeft: '0px', background: 'rgb(85, 0, 0)', color: 'white'}} id="submit" value="Participar"/>
+
+        </div>
         </div>
 
         <div>
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Participar"/>
+        <input type="submit" hidden className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Participar"/>
         </div>
         
 

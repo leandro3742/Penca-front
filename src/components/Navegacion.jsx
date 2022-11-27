@@ -145,16 +145,21 @@ export const Navegacion = (props) => {
     
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                       
                     <li style={{marginLeft: '30px'}} className="nav-item active">
-                        <a className="nav-link" href="/listaeventos">Torneos</a>
-                    </li>
-    
-                    <li style={{marginLeft: '30px'}} className="nav-item active">
-                        <a className="nav-link" href="/altapencaempresarial">Pencas Empresariales</a>
+                        <a className="nav-link" href="/suscripcion">Crear Penca</a>
                     </li>
         
                     <li style={{marginLeft: '30px'}} className="nav-item active">
-                        <a className="nav-link" href="/verpencas">Ver Pencas</a>
+                        <a className="nav-link" href="/verpencas">Explorar Pencas</a>
+                    </li>
+
+                    <li style={{marginLeft: '30px'}} className="nav-item active">
+                        <a className="nav-link" href="/mispencas">Mis Pencas</a>
+                    </li>
+
+                    <li style={{marginLeft: '30px'}} className="nav-item active">
+                        <a className="nav-link" href="/participacionpenca">Mis Participaciones</a>
                     </li>
     
                     <li style={{marginLeft: '30px'}} className="nav-item active">

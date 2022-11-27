@@ -17,6 +17,10 @@ import { ListaEventos } from './pages/ListaEventos';
 import { Pronostico } from './pages/Pronostico';
 import { VerPencas } from './pages/VerPencas';
 import { ParticipacionPenca } from './pages/ParticipacionPenca';
+import { Suscripcion } from './pages/Suscripcion';
+import { MisPencas } from './pages/MisPencas';
+
+
 
 
 
@@ -60,6 +64,8 @@ function App() {
           <Route path="/Pronostico" element={<Pronostico />} />
           <Route path="/VerPencas" element={<VerPencas />} />
           <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
+          <Route path="/Suscripcion" element={<Suscripcion />} />
+          <Route path="/MisPencas" element={<MisPencas />} />
 
 
         

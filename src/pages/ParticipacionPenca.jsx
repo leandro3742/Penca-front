@@ -5,29 +5,13 @@ import Swal from 'sweetalert2';
 
 
 
-async function UpdatePronostico(credentials){
-    //console.log(JSON.stringify(credentials));
- // localStorage.setItem('penca', document.getElementById(document.getElementById('pencas').value).value);
 
- const settings = {
-    method: 'POST',
-    headers: {
-        "Content-Type":"application/json"
-    },
-    body: JSON.stringify(credentials)
-      
-  }
-  console.log(JSON.stringify(credentials));
-
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarPronostico`, settings);
-
-  //alert(await response.status);
-
-    if(await response.json()){
-        localStorage.setItem('actualizareventosalert', '1');
-        window.location.reload();
-        
-    }
+async function Pronosticar(credentials){
+  
+  localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
+  localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
+  window.location.href = "/pronostico";
+    
     
 
 }
@@ -44,6 +28,12 @@ async function getEventosTorneo(idPenca) {
    }*/
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
+    if(idPenca == ''){
+      document.getElementById('editar').hidden = true;
+    }else{
+      document.getElementById('editar').hidden = false;
+
+    }
 
 
 
@@ -53,65 +43,91 @@ async function getEventosTorneo(idPenca) {
       //div.textContent = "Class A";
     })
 
-    
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
+  
+    response = await response.json();
+
+    //console.log(response[0]['nombre']);
+
+
+     var idTorneo = -1;
+    for(let i = 0; i < response.length; i++){
+
+      if(response[i]['id'] == idPenca){
+        idTorneo = response[i]['torneo'];
+      }
+    }
 
         
     
-    getEventos();
+    getEventos(idTorneo);
 
 
 
 }
 
-  
-
-async function getEventos() {
-    let response1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarTorneos`);
-    response1 = await response1.json();
-    var tit = document.createElement("label");
-    tit.innerHTML = "Estos son tus pronósticos para:   ";
-    tit.style.color = 'rgb(200,200,200)';
-    tit.style.marginTop = '50px';
-    document.getElementById('primerdiv').appendChild(tit);
-
-    for(let i = 0; i < response1.length; i++){
-        if(response1[i]['id'] == localStorage.getItem('torneo')){
-            //document.getElementById('titulo').textContent = response1[i]['nombre'];
-            var tit = document.createElement("label");
-            tit.innerHTML = response1[i]['nombre'];
-            tit.style.color = 'white';
-            tit.style.fontSize = '25px';
-            tit.style.marginTop = '50px';
-            document.getElementById('primerdiv').appendChild(tit);
-        }
-    }
 
 
+async function getPencas(idTorneo) {
+   
 
 
-
-    var idTorneo = localStorage.getItem('torneo');
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEventosTorneo?id=`+idTorneo);
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
     response = await response.json();
-
-    localStorage.setItem('torneo', idTorneo);
-    var user = sessionStorage.getItem('username');
-    var idpe = localStorage.getItem('idpenca');
-
 
     //console.log(response[0]['nombre']);
 
 
 
     for(let i = 0; i < response.length; i++){
+      let t = document.getElementById('pencas');
+      var opt = document.createElement('option');
+      opt.value = response[i]['id'];
+      opt.id = response[i]['id'];
+      opt.innerHTML = response[i]['nombre'];
+
       
-        var eventoid = response[i]['id'];
+      var idp = document.createElement("input");
+      idp.id = response[i]['nombre'];
+      idp.style.display = 'none';
+      idp.value = response[i]['id'];
+      document.getElementById('principal').appendChild(idp);
+
+
+
+
+      t.appendChild(opt); 
+    }
+
+   
+  }
+
+
+
+  
+
+async function getEventos(idTorneo) {
+
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEventosTorneo?id=`+idTorneo);
+  
+    response = await response.json();
+
+    localStorage.setItem('torneo', idTorneo);
+
+
+    //console.log(response[0]['nombre']);
+
+
+
+
+    for(let i = 0; i < response.length; i++){
+      
 
         var div = document.createElement("div");
         div.id = "eventos";
-        var fecha = document.createElement("label");
-        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + new Date(response[i]['fechaHora']).getMonth() + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
+        var fecha = document.createElement("label"); var me = new Date(response[i]['fechaHora']).getMonth() + 1;
+        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + me + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
         fecha.style.color = "rgb(200,200,200)";
         fecha.style.marginBottom = '30px';
         fecha.id = 'fecha' + response[i]['id'];
@@ -148,18 +164,8 @@ async function getEventos() {
         res1.placeholder = '-';
         res1.id = 'resequipo1' + response[i]['id'];
         res1.classList = 'inputclass arrows borrar floatleft';
-        res1.type = 'number';
-
-        let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=`+user+`&id_Penca=`+idpe);
-        //let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=facundo@bunker360.com&id_Penca=1`);
-
-        pronostico = await pronostico.json();
-        for(let x = 0; x < pronostico.length; x++){
-          if(pronostico[x]['id_Evento'] == eventoid){
-            res1.value = pronostico[x]['golesEquipo1'];
-          }
-        }
-          //res1.value = response[i]['golesEquipo1'];
+        res1.value = response[i]['golesEquipo1'];
+        res1.disabled = true;
         res1.style = 'background: rgb(30,30,30)';
         div.appendChild(res1);
 
@@ -172,13 +178,6 @@ async function getEventos() {
         div.appendChild(idevento);
 
 
-       var idev = document.createElement("input");
-        //idevento.id = 'idequipo' + response[i]['id'];
-        idev.id = 'idev' + i;
-        idev.value = response[i]['id'];
-        idev.style.display = 'none';
-        div.appendChild(idev);
-
         var vs = document.createElement("label");
         vs.innerHTML = "  VS  ";
         vs.style.color = "grey";
@@ -189,17 +188,11 @@ async function getEventos() {
 
         var res2 = document.createElement("input");
         res2.placeholder = '-';
-        res2.type = 'number';
+        res2.disabled = true;
         res2.style = 'background: rgb(30,30,30);'
         res2.id = 'resequipo2' + response[i]['id'];
         res2.classList = 'inputclass arrows borrar';
-
-        for(let x = 0; x < pronostico.length; x++){
-          if(pronostico[x]['id_Evento'] == eventoid){
-            res2.value = pronostico[x]['golesEquipo2'];
-          }
-        }
-        //res2.value = response[i]['golesEquipo2'];
+        res2.value = response[i]['golesEquipo2'];
         div.appendChild(res2);
 
 
@@ -221,93 +214,54 @@ async function getEventos() {
 
 
         var fin = document.createElement("label");
-        fin.style.color = "rgb(85,85,85)";
+        fin.style.color = "grey";
         fin.style.marginTop = "30px";
 
-        fin.innerHTML = 'Finalizado <br/>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
+        fin.innerHTML = "Finalizado";
         fin.classList = 'borrar';
 
         if(response[i]['resultado'] == ""){
             fin.style.visibility = 'hidden';
-        }else{
-          //esto es provisorio, deberia poner como medida el horario del partido
-            res1.readOnly = true;
-            res2.readOnly = true;
         }
         div.appendChild(fin);
-        
 
 
         document.getElementById("principal").appendChild(div);
       
-       
 
     }
 
-        
+   
   }
-  async function altaPronostico(){
-  
-    document.querySelectorAll("#idequipo").forEach(div => {
-      //alert(div.value);
-      var ideq = div.value;
-  
-      //var vareq1 = 'equipo1' + id;
-      var f = document.getElementById('f'+ideq).textContent;
-      var d = new Date(f);
-      f = d.toJSON();
-  
-      var reseq1 = document.getElementById('resequipo1'+ideq).value;
-      var reseq2 = document.getElementById('resequipo2'+ideq).value;
-      var penca = localStorage.getItem('idpenca');
-      var username = sessionStorage.getItem('username');
 
-
-  
-      if(username != null && username != ""){
-  
-  
-      
-      UpdatePronostico({
-        golesEquipo1:reseq1,
-        golesEquipo2:reseq2,
-        username:username,
-        id_Evento:ideq,
-        id_Penca:penca,
-        esCompartida:true
-  
-
-      })
-
-    }else{
-      Swal.fire({
-        background: 'rgb(40,40,40)',
-        color: 'rgb(200,200,200)',
-        title: "No se econtró usuario logueado!",
-        icon: "error",
-        button: false,
-        timer:3000
-    });
-    }
-  
-    })
-  }
-  
 
 export const ParticipacionPenca = () => {
 
 
     
  useEffect(()=>{
-    //UpdatePronostico();
-    getEventosTorneo(localStorage.getItem('idpenca'));
+    document.getElementById('pencas').empty;
+    getPencas(0);
     //getEventos();
+    if(localStorage.getItem("alertparticipacion") !== null){
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Te has anotado a la penca!",
+        text: 'Aquí en "Mis Participaciones" puedes encontrar todas las pencas en las que participas y editar tus pronósticos',
+        icon: "success",
+        button: true
+    });
+    localStorage.removeItem("alertparticipacion")
+
+    }
+
 
     if(localStorage.getItem("actualizareventosalert") !== null){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado los eventos correctamente!",
+        title: "Se han actualizado los pronosticos correctamente!",
         icon: "success",
         button: false,
         timer:3000
@@ -324,25 +278,10 @@ export const ParticipacionPenca = () => {
 
     //var idev = document.getElementsByClassName('idequipo').length;
 
-    Swal.fire({
-      background: 'rgb(40,40,40)',
-      color: 'rgb(200,200,200)',
-      title: 'Estás seguro?',
-      text: "Se guardarán/modificarán los pronósticos que has hecho",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: 'rgb(103, 184, 209)',
-      cancelButtonColor: 'rgb(70,0,0)',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si, confirmar!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        altaPronostico();
-      }
-    })
+    Pronosticar();
   
 
-   
+
 }
 
 
@@ -350,20 +289,19 @@ export const ParticipacionPenca = () => {
         
     <div id="principal" className='grid-container-element colores' >
 
-        
-        
-        
-        <div id="primerdiv" className='resp'>
-            
-        <h2 id="titulo" style={{color: 'white', marginTop: '50px', float: 'left', marginLeft: '50px'}}></h2>
-
+        <div>
+          <h5 style={{float: 'left', marginLeft: '10vh', color: 'rgb(200,200,200)', marginTop: '50px', lineHeight: '40px'}}>Pencas en las que participo:     </h5>
+        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
+            <option value="">Seleccione una penca</option>
+        </select>
         </div>
-                
 
-
-        <div className='resp1' style={{ }}>
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', float: 'right', marginRight: '50px'}} value="Confirmar Pronósticos"/>
+        <div>
+        <input type="submit" id="editar"  hidden="hidden" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Editar Pronósticos"/>
         </div>
+        
+
+
 
 
     </div>
