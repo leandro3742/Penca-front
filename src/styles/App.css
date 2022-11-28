@@ -288,6 +288,20 @@
   background-size: cover;
 }
 
+.ranking { 
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/fwc.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.tablaranking{
+  width: 60%;
+}
+
 .portadaHome { 
 
   position:fixed;
