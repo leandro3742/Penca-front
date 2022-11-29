@@ -28,6 +28,7 @@
   background: rgb(212, 11, 11);
 }
 
+
 .login{
   margin-top: 15vh;
   padding: 80px;
@@ -75,6 +76,19 @@
 .labelregistro:hover{
   
   color: rgb(124, 214, 63);
+}
+
+
+.btnver{
+  border-radius: 5px;
+  border: 1px solid grey;
+  color: grey;
+  background: none;
+}
+
+.btnver:hover{
+  border: 1px solid white;
+  color: white;
 }
 
 
@@ -174,14 +188,51 @@
   width: 100%; 
 
   position:fixed;
+  overflow-y:scroll;
+  padding:0;
+  margin:0;
+
+  top:50;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+} 
+
+
+.colores{
+  
+  background-image: linear-gradient(rgb(44, 122, 158), rgb(19, 80, 116));
+  
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/fondopenca.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+
+.grid-container-element1 { 
+  background: linear-gradient(to right, rgb(7, 7, 7), rgb(95,95,95));
+
+  display: grid; 
+  grid-template-columns: 1fr; 
+  grid-gap: 20px; 
+  border: 1px solid black; 
+  width: 60%; 
+
+  position:fixed;
   padding:0;
   margin:0;
 
   top:0;
   left:0;
-
+  margin: 0 auto;
   width: 100%;
   height: 100%;
+  
 } 
 .grid-child-element { 
   margin: 0px; 
@@ -201,8 +252,96 @@
   background-size: cover;
 }
 
+.alfrente{
+  z-index: 1;
+}
 
 
+.listatorneosfondo{
+  
+  background-image: linear-gradient(rgb(44, 122, 158), rgb(13, 52, 126));
+
+}
+
+
+
+.tabla{
+  margin-top: 90px;
+  width: 100%;
+  max-height: 15px;
+  overflow: auto;
+
+}
+
+
+.conttable{
+  height: 15px;
+}
+
+
+.portadaPenca { 
+  margin: 0px; 
+  position: justify;
+  background-image: url("../imagenes/suarez.jpg");
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.portadaHome { 
+
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  top:0;
+  left:0;
+
+  width: 100%;
+  height: 100%;
+
+
+  position: justify;
+  background-image: url("../imagenes/pelota.jpg");
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+
+
+}
+
+.btn-logout{
+  background: none; 
+  border:none; 
+  line-height: 38px; 
+  
+  color: rgb(151, 87, 87);
+
+}
+
+.btn-logout:hover{
+  color: rgb(255, 59, 59);
+  background:rgb(41, 41, 41);
+
+}
+
+
+.pencasFondo{
+    background-image: linear-gradient(rgb(11, 93, 131), rgb(87, 135, 224), rgb(37, 67, 124));
+    background-image: linear-gradient(rgb(44, 122, 158), rgb(13, 52, 126));
+
+
+}
+
+.barra{
+  z-index: 1;
+}
+nav{
+  background: red;
+  color: green;
+}
 
 .contenedor{
   margin-top: 15vh;
@@ -213,12 +352,73 @@
   background: rgb(49, 49, 49);
 }
 .contenedor1{
-  margin-top: 10vh;
+  margin-top: 15vh;
   padding: 80px;
   border-radius: 5px;
   box-shadow: 4px 2px 4px 4px #252525;
   width: 70%;
   background: rgb(25, 44, 53);
+
+
+  margin: 13% auto;
+  
+
+
+
+
+
+
+}
+
+.arrows::-webkit-outer-spin-button,
+.arrows::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  .arrows[type=number] {
+      -moz-appearance: textfield;
+  }
+
+
+  .inputclass{
+    background: none;
+    width: 70px;
+    color: white;
+    height: 60px;
+    font-size: 30px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
+    border-radius: 5px;
+    border: 1px solid white;
+    
+  }
+
+  .labelcuadros{
+    color: rgb(200,200,200);
+    font-size: '20px';
+    font-weight: bold;
+  }
+
+
+.resultados{
+  padding: 10px;
+  padding-bottom: 10px;
+
+  height: 200px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 4px 4px #2b0d0d;
+  width: 90%;
+  background: linear-gradient(rgb(82, 5, 5), rgb(36, 0, 0));
+  background: linear-gradient(rgb(85, 0, 25), rgb(43, 3, 31));
+
+
+
+
+  margin: 5vh auto;
+  
 
 
 
@@ -237,6 +437,21 @@
 
 
 
+}
+.divselect{
+  border: 2px solid rgb(53, 0, 0);
+  margin-top: 50px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+  box-shadow: 4px 2px 4px 4px #1b0000;
+  
+
+
+}
+
+
+.res{
+  display: inline-block;
 }
 .portada{
   position:fixed;
@@ -327,6 +542,46 @@
 
 
 @media (max-width: 1050px){
+  .inputclass{
+    width: 30px;
+    color: white;
+    height: 30px;
+    font-size: 15px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
+    border-radius: 5px;
+    border: 1px solid white;
+
+    float: right;
+    
+  }
+
+  .floatleft{
+    float: left;
+  }
+
+
+  .resp{
+    display: none;
+  }
+
+  
+
+  .margi{
+    display: none;
+  }
+
+  .labelcuadros{
+    color: rgb(200,200,200);
+    font-weight: normal;
+  }
+
+  .res{
+    margin-top: 20px;
+  }
+
   .login1{
     width: 80%;
     padding: 15px;

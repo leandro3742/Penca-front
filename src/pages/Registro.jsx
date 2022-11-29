@@ -44,23 +44,24 @@ async function confirmarRegistro(credentials){
     body: JSON.stringify(credentials)
       
   }
-  console.log(JSON.stringify(credentials));
+  //console.log(JSON.stringify(credentials));
 
 
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/Register`, settings);
-  console.log(await response.status);
-  console.log(await response.json());
+  //console.log(await response.status);
+  var respuesta = await response.json();
+  console.log(respuesta['statusMessage']);
 
-    if(response.status == 400){
+    if(response.status != 200 && response.status != 201){
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: 'Ha ocurrido un error, vuelva a intentarlo.',
+        title: 'Error!',
+        text: respuesta['statusMessage'],
         icon: "error",
-        button: false,
-        timer:3000
+        button: false
     });
-    }else if(response.status == 200 || response.status == 201){
+    }else{
       
       localStorage.setItem('registroalert', '1');
       window.location.reload();
@@ -68,8 +69,8 @@ async function confirmarRegistro(credentials){
      
     }
     
-    console.log(JSON.stringify(credentials));
-    console.log(response);
+    //console.log(JSON.stringify(credentials));
+    //console.log(response);
 
     
   
@@ -126,10 +127,12 @@ export const Registro = () => {
                 <input type="text" name='apellido' id="apellido" onChange={e => setApellido(e.target.value)} placeholder='Ingrese su apellido' className='form-control' /> <br />
 
                 <label htmlFor="" style={{marginTop: '0px', float: 'left', color: 'rgb(200,200,200)'}}>Correo</label>
-                <input type="text" name='email' id="email" onChange={e => setEmail(e.target.value)} placeholder='Ingrese su correo' className='form-control' /> <br />
+                <input type="text" name='email' id="email" onChange={e => setEmail(e.target.value)} placeholder='Ingrese su correo (user@example.com)' className='form-control' /> <br />
 
                 <label htmlFor="" style={{marginTop: '0px', float: 'left', color: 'rgb(200,200,200)'}}>Contraseña</label>
-                <input type="password" name='pass' id="pass" onChange={e => setPass(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' /> <br />
+                <input type="password" name='pass' id="pass" onChange={e => setPass(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
+                <label htmlFor="" style={{fontSize: '11px', marginTop: '0px', float: 'left', color: 'rgb(150,150,150)'}}>La contraseña debe contener al menos una mayúscula, una minúscula, un número y un caracter alfanumérico.</label> <br />
+                
                 
                 <input type="submit" className='btn-verde' value="Registrarse" />
 

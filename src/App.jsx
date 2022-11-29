@@ -7,7 +7,22 @@ import { Navegacion } from './components/Navegacion';
 import Login from './pages/login';
 import { AltaTorneo } from './pages/altaTorneo';
 import { AltaEvento } from './pages/AltaEvento';
+import { AltaPenca } from './pages/AltaPenca';
+
 import { Registro } from './pages/Registro';
+import { AltaPencaCompartida } from './pages/AltaPencaCompartida';
+import { AltaPencaEmpresarial } from './pages/AltaPencaEmpresarial';
+import { ListaTorneos } from './pages/ListaTorneos';
+import { ListaEventos } from './pages/ListaEventos';
+import { Pronostico } from './pages/Pronostico';
+import { VerPencas } from './pages/VerPencas';
+import { ParticipacionPenca } from './pages/ParticipacionPenca';
+import { Suscripcion } from './pages/Suscripcion';
+import { MisPencas } from './pages/MisPencas';
+
+
+
+
 
 // async function fetchA(){
 //   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}WeatherForecast`)
@@ -28,7 +43,7 @@ function App() {
   // }, []);
 
   return (
-    <div>
+    <div style={{}}>
       <Navegacion>    </Navegacion>
 
 
@@ -41,6 +56,23 @@ function App() {
           <Route path="/AltaTorneo" element={<AltaTorneo />} />
           <Route path="/AltaEvento" element={<AltaEvento />} />
           <Route path="/Registro" element={<Registro />} />
+          <Route path="/AltaPenca" element={<AltaPenca />} />
+          <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
+          <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
+          <Route path="/listaTorneos" element={<ListaTorneos />} />
+          <Route path="/listaEventos" element={<ListaEventos />} />
+          <Route path="/Pronostico" element={<Pronostico />} />
+          <Route path="/VerPencas" element={<VerPencas />} />
+          <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
+          <Route path="/Suscripcion" element={<Suscripcion />} />
+          <Route path="/MisPencas" element={<MisPencas />} />
+
+
+        
+
+
+
+
 
 
 
