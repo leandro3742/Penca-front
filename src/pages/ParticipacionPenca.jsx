@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 
 
-async function Pronosticar(credentials){
+async function Pronosticar(){
   
   localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
   localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
@@ -16,6 +16,13 @@ async function Pronosticar(credentials){
 
 }
 
+
+
+function verRanking(idPenca){
+  localStorage.setItem('idpenca',idPenca);
+  window.location.href = "/ranking";
+
+}
 
 
 async function getEventosTorneo(idPenca) {
@@ -30,8 +37,12 @@ async function getEventosTorneo(idPenca) {
     //alert(document.querySelectorAll("#eventos").length);
     if(idPenca == ''){
       document.getElementById('editar').hidden = true;
+      document.getElementById('ranking').hidden = true;
+
     }else{
       document.getElementById('editar').hidden = false;
+      document.getElementById('ranking').hidden = false;
+
 
     }
 
@@ -69,35 +80,60 @@ async function getEventosTorneo(idPenca) {
 
 
 async function getPencas(idTorneo) {
-   
-
 
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
     response = await response.json();
+    var pencas = []; 
+
+  for(let i = 0; i < response.length; i++){
+
+    let userpenca = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarioPenca?id_Penca=`+response[i]['id']+`&esCompartida=true`);
+    userpenca = await userpenca.json();
+
+    for(let x = 0; x < userpenca.length; x++){
+      if(userpenca[x]['username'] == sessionStorage.getItem('username')){
+        pencas.push(response[i]['id']);
+      }
+    }
+
+    
+  }
+
+  
+
 
     //console.log(response[0]['nombre']);
 
 
 
     for(let i = 0; i < response.length; i++){
-      let t = document.getElementById('pencas');
-      var opt = document.createElement('option');
-      opt.value = response[i]['id'];
-      opt.id = response[i]['id'];
-      opt.innerHTML = response[i]['nombre'];
-
       
-      var idp = document.createElement("input");
-      idp.id = response[i]['nombre'];
-      idp.style.display = 'none';
-      idp.value = response[i]['id'];
-      document.getElementById('principal').appendChild(idp);
+
+
+      for(let it = 0; it < pencas.length; it++){
+
+        if(pencas[it] == response[i]['id']){
+
+          let t = document.getElementById('pencas');
+          var opt = document.createElement('option');
+          opt.value = response[i]['id'];
+          opt.id = response[i]['id'];
+          opt.innerHTML = response[i]['nombre'];
+
+          
+          var idp = document.createElement("input");
+          idp.id = response[i]['nombre'];
+          idp.style.display = 'none';
+          idp.value = response[i]['id'];
+          document.getElementById('principal').appendChild(idp);
 
 
 
 
       t.appendChild(opt); 
+        }
+      }
     }
 
    
@@ -261,7 +297,7 @@ export const ParticipacionPenca = () => {
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado los pronosticos correctamente!",
+        title: "Se han actualizado los eventos correctamente!",
         icon: "success",
         button: false,
         timer:3000
@@ -278,8 +314,19 @@ export const ParticipacionPenca = () => {
 
     //var idev = document.getElementsByClassName('idequipo').length;
 
-    Pronosticar();
+   Pronosticar();
   
+
+
+}
+
+const handleSubmit1 = async (e) => {
+  //e.preventDefault();
+
+  //var idev = document.getElementsByClassName('idequipo').length;
+
+ verRanking(document.getElementById('pencas').value);
+
 
 
 }
@@ -297,7 +344,9 @@ export const ParticipacionPenca = () => {
         </div>
 
         <div>
-        <input type="submit" id="editar"  hidden="hidden" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Editar Pronósticos"/>
+        <input type="submit" id="editar"  hidden="hidden" className="btn btn-login " onClick={e => handleSubmit(e.target.value)} style={{color: 'white', background: 'rgb(0, 4, 45)', width: '180px', marginTop: '50px', marginLeft: '5vh'}} value="Editar Pronósticos"/><br className='br' />
+        <input type="button" id="ranking" hidden="hidden" className="btn btn-login " onClick={e => handleSubmit1(e.target.value)} style={{color: 'white', background: 'rgb(0, 4, 45)', width: '180px', marginTop: '50px', marginLeft: '5vh'}} value="Posiciones"/> 
+
         </div>
         
 

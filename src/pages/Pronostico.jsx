@@ -111,7 +111,7 @@ async function getEventos() {
         var div = document.createElement("div");
         div.id = "eventos";
         var fecha = document.createElement("label"); var mes = new Date(response[i]['fechaHora']).getMonth() + 1; 
-        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + mes + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes();
+        fecha.innerHTML = new Date(response[i]['fechaHora']).getDate() + '/' + mes + '/' + new Date(response[i]['fechaHora']).getFullYear() + ' ' + new Date(response[i]['fechaHora']).getHours() + ':' + new Date(response[i]['fechaHora']).getMinutes() + ' - Pronóstico';
         fecha.style.color = "rgb(200,200,200)";
         fecha.style.marginBottom = '30px';
         fecha.id = 'fecha' + response[i]['id'];
@@ -288,8 +288,6 @@ async function getEventos() {
   
       if(username != null && username != ""){
   
-  
-      
       UpdatePronostico({
         golesEquipo1:reseq1,
         golesEquipo2:reseq2,
@@ -321,6 +319,7 @@ export const Pronostico = () => {
 
     
  useEffect(()=>{
+
     //UpdatePronostico();
     getEventosTorneo(localStorage.getItem('idpenca'));
     //getEventos();

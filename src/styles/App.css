@@ -298,6 +298,10 @@
 }
 
 
+.br{
+  display: none;
+}
+
 .tablaranking{
   width: 60%;
 }
@@ -464,6 +468,12 @@ nav{
 }
 
 
+.azulbarca{
+  background: rgb(52, 50, 102);
+  color: white;
+}
+
+
 .res{
   display: inline-block;
 }
@@ -556,6 +566,12 @@ nav{
 
 
 @media (max-width: 1050px){
+
+  .br{
+    display: block;
+  }
+
+
   .inputclass{
     width: 30px;
     color: white;

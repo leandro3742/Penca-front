@@ -81,18 +81,66 @@ async function getEventosTorneo(idPenca) {
 }
 
 
+function contains(a, obj) {
+  for (var i = 0; i < a.length; i++) {
+      if (a[i] === obj) {
+          return true;
+      }
+  }
+  return false;
+}
+
 
 async function getPencas(idTorneo) {
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
-    response = await response.json();
+  response = await response.json();
+  var pencas = []; 
+
+    for(let i = 0; i < response.length; i++){
+
+      let userpenca = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarioPenca?id_Penca=`+response[i]['id']+`&esCompartida=true`);
+      userpenca = await userpenca.json();
+
+      for(let x = 0; x < userpenca.length; x++){
+        if(userpenca[x]['username'] == sessionStorage.getItem('username')){
+          pencas.push(response[i]['id']);
+        }
+      }
+
+      
+    }
 
     //console.log(response[0]['nombre']);
 
 
 
     for(let i = 0; i < response.length; i++){
+      if(!contains(pencas,response[i]['id'])){
+        let t = document.getElementById('pencas');
+        var opt = document.createElement('option');
+        opt.value = response[i]['id'];
+        opt.id = response[i]['id'];
+        opt.innerHTML = response[i]['nombre'];
+  
+        
+        var idp = document.createElement("input");
+        idp.id = response[i]['nombre'];
+        idp.style.display = 'none';
+        idp.value = response[i]['id'];
+        document.getElementById('principal').appendChild(idp);
+  
+  
+  
+  
+        t.appendChild(opt); 
+      }
+    }
+
+
+
+    /*for(let i = 0; i < response.length; i++){
       let t = document.getElementById('pencas');
       var opt = document.createElement('option');
       opt.value = response[i]['id'];
@@ -110,7 +158,7 @@ async function getPencas(idTorneo) {
 
 
       t.appendChild(opt); 
-    }
+    }*/
 
    
   }
