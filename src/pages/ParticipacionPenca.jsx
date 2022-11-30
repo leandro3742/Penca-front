@@ -25,7 +25,11 @@ function verRanking(idPenca){
 }
 
 
-async function getEventosTorneo(idPenca) {
+async function getEventosTorneo(idPenca, posicion) {
+
+  localStorage.setItem('esCompartida', document.getElementById('esCompartida'+posicion).value);
+
+  //alert(document.getElementById('esCompartida'+posicion).value);
    /*var className = document.getElementsByClassName('borrar');
    for(var index=0;index < className.length;index++){
         alert(className.length + ' - ' + index);
@@ -35,6 +39,8 @@ async function getEventosTorneo(idPenca) {
    }*/
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
+
+
     if(idPenca == ''){
       document.getElementById('editar').hidden = true;
       document.getElementById('ranking').hidden = true;
@@ -53,6 +59,12 @@ async function getEventosTorneo(idPenca) {
       // Swap the text as well
       //div.textContent = "Class A";
     })
+
+
+
+
+    if(document.getElementById('esCompartida'+posicion).value == 'true'){
+
 
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
@@ -73,6 +85,33 @@ async function getEventosTorneo(idPenca) {
     
     getEventos(idTorneo);
 
+  }
+
+  if(document.getElementById('esCompartida'+posicion).value == 'false'){
+
+
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+  
+    response = await response.json();
+
+    //console.log(response[0]['nombre']);
+
+
+     var idTorneo = -1;
+    for(let i = 0; i < response.length; i++){
+
+      if(response[i]['id'] == idPenca){
+        idTorneo = response[i]['torneo'];
+      }
+    }
+
+        
+    
+    getEventos(idTorneo);
+
+  }
+
+
 
 
 }
@@ -84,7 +123,9 @@ async function getPencas(idTorneo) {
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
     response = await response.json();
-    var pencas = []; 
+    var pencas = [];
+    var esCompartida = [];
+    
 
   for(let i = 0; i < response.length; i++){
 
@@ -94,17 +135,49 @@ async function getPencas(idTorneo) {
     for(let x = 0; x < userpenca.length; x++){
       if(userpenca[x]['username'] == sessionStorage.getItem('username')){
         pencas.push(response[i]['id']);
+        esCompartida.push('true');
       }
     }
+  }
+  
 
+    let response1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+
+    if(response1.status == 200 || response1.status == 201){
+  
+    response1 = await response1.json();
+    var pencas1 = [];
+
+  for(let i = 0; i < response1.length; i++){
+
+    let userpenca1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarioPenca?id_Penca=`+response1[i]['id']+`&esCompartida=false`);
+    userpenca1 = await userpenca1.json();
+
+    for(let x = 0; x < userpenca1.length; x++){
+      if(userpenca1[x]['username'] == sessionStorage.getItem('username')){
+        pencas1.push(response1[i]['id']);
+        pencas.push(response1[i]['id']);
+        esCompartida.push('false');
+
+      }
+    }
+  }
+  
     
   }
 
-  
 
+
+    for(let x = 0; x < esCompartida.length; x++){
+      var esc = document.createElement('input');
+      esc.style.display = 'none';
+      esc.value = esCompartida[x];
+      esc.id = 'esCompartida'+x;
+      document.getElementById('principal').appendChild(esc);
+
+    }
 
     //console.log(response[0]['nombre']);
-
 
 
     for(let i = 0; i < response.length; i++){
@@ -112,20 +185,95 @@ async function getPencas(idTorneo) {
 
 
       for(let it = 0; it < pencas.length; it++){
+        
+      if(esCompartida[it] == 'true'){
 
         if(pencas[it] == response[i]['id']){
 
+
+              let t = document.getElementById('pencas');
+              var opt = document.createElement('option');
+              opt.value = response[i]['id'];
+              opt.id = response[i]['id'];
+              opt.innerHTML = response[i]['nombre'];
+
+              
+              var idp = document.createElement("input");
+              idp.id = response[i]['nombre'];
+              idp.style.display = 'none';
+              idp.value = response[i]['id'];
+              document.getElementById('principal').appendChild(idp);
+
+
+
+
+              t.appendChild(opt); 
+        }
+      }
+    }
+  }
+
+
+ for(let i = 0; i < response1.length; i++){
+
+  for(let it = 0; it < pencas.length; it++){
+
+      
+      if(esCompartida[it] == 'false'){
+        if(pencas[it] == response1[i]['id']){
+
           let t = document.getElementById('pencas');
           var opt = document.createElement('option');
-          opt.value = response[i]['id'];
-          opt.id = response[i]['id'];
-          opt.innerHTML = response[i]['nombre'];
+          opt.value = response1[i]['id'];
+          opt.id = response1[i]['id'];
+          opt.innerHTML = response1[i]['nombre'];
 
           
           var idp = document.createElement("input");
-          idp.id = response[i]['nombre'];
+          idp.id = response1[i]['nombre'];
           idp.style.display = 'none';
-          idp.value = response[i]['id'];
+          idp.value = response1[i]['id'];
+          document.getElementById('principal').appendChild(idp);
+
+
+
+
+          t.appendChild(opt); 
+    }
+      }
+      }
+
+    }
+    
+
+
+
+
+    
+
+
+
+/*
+    
+    for(let i = 0; i < response1.length; i++){
+      
+
+
+      for(let it = 0; it < pencas1.length; it++){
+
+        if(pencas1[it] == response1[i]['id']){
+
+          let t = document.getElementById('pencas');
+          var opt = document.createElement('option');
+          opt.value = response1[i]['id'];
+          opt.id = response1[i]['id'];
+          opt.innerHTML = response1[i]['nombre'];
+
+          
+          var idp = document.createElement("input");
+          idp.id = response1[i]['nombre'];
+          idp.style.display = 'none';
+          idp.value = response1[i]['id'];
           document.getElementById('principal').appendChild(idp);
 
 
@@ -134,10 +282,12 @@ async function getPencas(idTorneo) {
       t.appendChild(opt); 
         }
       }
-    }
+    }*/
 
-   
   }
+
+
+
 
 
 
@@ -338,7 +488,7 @@ const handleSubmit1 = async (e) => {
 
         <div>
           <h5 style={{float: 'left', marginLeft: '10vh', color: 'rgb(200,200,200)', marginTop: '50px', lineHeight: '40px'}}>Pencas en las que participo:     </h5>
-        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
+        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value, e.target.selectedIndex-1)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
             <option value="">Seleccione una penca</option>
         </select>
         </div>

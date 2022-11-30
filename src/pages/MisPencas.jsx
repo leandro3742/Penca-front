@@ -6,6 +6,28 @@ import Swal from 'sweetalert2';
 
 async function getPencas(){
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+
+    if(response.status == 204){
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: 'No tienes ninguna penca creada',
+        text: "Deseas crear una?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'rgb(103, 184, 209)',
+        cancelButtonColor: 'rgb(70,0,0)',
+        cancelButtonText: 'Volver',
+        confirmButtonText: 'Si, crear penca!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/suscripcion';
+        }else{
+            window.location.href = '/';
+
+        }
+      })
+    }else{
     response = await response.json();
     var tiene = 0;
 
@@ -49,6 +71,7 @@ async function getPencas(){
 
 
       }
+    }
 
     
 

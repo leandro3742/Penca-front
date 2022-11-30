@@ -19,13 +19,16 @@ async function UpdatePronostico(credentials){
   }
   console.log(JSON.stringify(credentials));
 
+
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarPronostico`, settings);
+
 
   //alert(await response.status);
 
     if(await response.json()){
         localStorage.setItem('actualizareventosalert', '1');
         window.location.reload();
+
         
     }
     
@@ -287,6 +290,14 @@ async function getEventos() {
 
   
       if(username != null && username != ""){
+
+        if(localStorage.getItem('esCompartida') == 'true'){
+          var escom = true;
+        }else{
+          var escom = false;
+
+        }
+
   
       UpdatePronostico({
         golesEquipo1:reseq1,
@@ -294,7 +305,7 @@ async function getEventos() {
         username:username,
         id_Evento:ideq,
         id_Penca:penca,
-        esCompartida:true
+        esCompartida:escom
   
 
       })

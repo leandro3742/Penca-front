@@ -16,7 +16,7 @@ function sortByKey(array, key) {
   
 
 async function getRanking(idPenca){
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idPenca+ `&esCompartida=true`);
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idPenca+ `&esCompartida=`+localStorage.getItem('esCompartida'));
   
     response = await response.json();
 

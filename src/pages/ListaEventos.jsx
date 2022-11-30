@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 
 
-async function actualizarRanking(){
+async function actualizarRankingCompartida(){
 
   var idTorneo = document.getElementById('torneos').value;
 
@@ -15,15 +15,25 @@ async function actualizarRanking(){
   for(let i = 0; i < pencas.length; i++){
 
     if(pencas[i]['torneo'] == idTorneo){
-      alert(pencas[i]['esCompartida']);
-      if(pencas[i]['esCompartida'] == true){
-        alert('escompartida');
         actualizarcompartida(pencas[i]['id']);
-      }else{
-        alert('esempresarial');
-        actualizarempresarial(pencas[i]['id']);
+    }
+  }
 
-      }
+ 
+
+}
+
+async function actualizarRankingEmpresarial(){
+
+  var idTorneo = document.getElementById('torneos').value;
+
+  let pencas = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+  pencas = await pencas.json();
+
+  for(let i = 0; i < pencas.length; i++){
+
+    if(pencas[i]['torneo'] == idTorneo){
+        actualizarempresarial(pencas[i]['id']);
     }
   }
 
@@ -36,6 +46,8 @@ async function actualizarempresarial(idpenca){
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarPuntajes?id_Penca=`+idpenca+`&esCompartida=false`);
   response = await response.json();
 }
+
+
 
 async function actualizarcompartida(idpenca){
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarPuntajes?id_Penca=`+idpenca+`&esCompartida=true`);
@@ -128,7 +140,9 @@ async function confirmarEvento(credentials){
     })
 
   })
-  actualizarRanking();
+  actualizarRankingCompartida();
+  actualizarRankingEmpresarial();
+
 }
 
 
