@@ -20,6 +20,7 @@ import { ParticipacionPenca } from './pages/ParticipacionPenca';
 import { Suscripcion } from './pages/Suscripcion';
 import { MisPencas } from './pages/MisPencas';
 import { Ranking } from './pages/Ranking';
+import { PencasCompartidas } from './pages/PencasCompartidas';
 
 
 
@@ -69,6 +70,8 @@ function App() {
           <Route path="/Suscripcion" element={<Suscripcion />} />
           <Route path="/MisPencas" element={<MisPencas />} />
           <Route path="/Ranking" element={<Ranking />} />
+          <Route path="/PencasCompartidas" element={<PencasCompartidas />} />
+
 
 
 

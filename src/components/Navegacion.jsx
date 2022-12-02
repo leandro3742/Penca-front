@@ -111,7 +111,7 @@ export const Navegacion = (props) => {
                 </li>
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
-                    <a className="nav-link" href="/verpencas">Ver Pencas</a>
+                    <a className="nav-link" href="/pencascompartidas">Ver Pencas</a>
                 </li>
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
