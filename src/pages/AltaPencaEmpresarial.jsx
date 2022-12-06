@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import PaypalCheckoutButton from '../components/paypalCheckoutButton'
+import PaypalCheckoutButton from '../components/PaypalCheckoutButton'
 
 async function NuevaPenca(credentials) {
   Swal.fire({
