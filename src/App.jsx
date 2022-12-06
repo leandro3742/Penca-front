@@ -20,7 +20,7 @@ import { ParticipacionPenca } from './pages/ParticipacionPenca';
 import { Suscripcion } from './pages/Suscripcion';
 import { MisPencas } from './pages/MisPencas';
 import { Ranking } from './pages/Ranking';
-
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 
 
@@ -51,37 +51,34 @@ function App() {
 
       
     <>
-    <BrowserRouter>
-      <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/AltaTorneo" element={<AltaTorneo />} />
-          <Route path="/AltaEvento" element={<AltaEvento />} />
-          <Route path="/Registro" element={<Registro />} />
-          <Route path="/AltaPenca" element={<AltaPenca />} />
-          <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
-          <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
-          <Route path="/listaTorneos" element={<ListaTorneos />} />
-          <Route path="/listaEventos" element={<ListaEventos />} />
-          <Route path="/Pronostico" element={<Pronostico />} />
-          <Route path="/VerPencas" element={<VerPencas />} />
-          <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
-          <Route path="/Suscripcion" element={<Suscripcion />} />
-          <Route path="/MisPencas" element={<MisPencas />} />
-          <Route path="/Ranking" element={<Ranking />} />
-
-
-
-        
-
-
-
-
-
-
-
-      </Routes>
-  </BrowserRouter>
+    <PayPalScriptProvider
+                options={{
+                    "client-id": import.meta.env.VITE_CLIENT_ID,
+                    components: "buttons",
+                    currency: "USD"
+                }}
+            >
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/AltaTorneo" element={<AltaTorneo />} />
+            <Route path="/AltaEvento" element={<AltaEvento />} />
+            <Route path="/Registro" element={<Registro />} />
+            <Route path="/AltaPenca" element={<AltaPenca />} />
+            <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
+            <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
+            <Route path="/listaTorneos" element={<ListaTorneos />} />
+            <Route path="/listaEventos" element={<ListaEventos />} />
+            <Route path="/Pronostico" element={<Pronostico />} />
+            <Route path="/VerPencas" element={<VerPencas />} />
+            <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
+            <Route path="/Suscripcion" element={<Suscripcion />} />
+            <Route path="/MisPencas" element={<MisPencas />} />
+            <Route path="/Ranking" element={<Ranking />} />
+        </Routes>
+      </BrowserRouter>
+    </PayPalScriptProvider>
   
   
     </>
