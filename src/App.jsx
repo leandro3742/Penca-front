@@ -5,7 +5,7 @@ import './styles/App.css'
 import "bootstrap/dist/css/bootstrap.css";
 import { Navegacion } from './components/Navegacion';
 import Login from './pages/login';
-import { AltaTorneo } from './pages/altaTorneo';
+import { AltaTorneo } from './pages/AltaTorneo';
 import { AltaEvento } from './pages/AltaEvento';
 import { AltaPenca } from './pages/AltaPenca';
 
