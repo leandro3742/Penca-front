@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import PaypalCheckoutButton from '../components/paypalCheckoutButton';
+import PaypalCheckoutButton from '../components/PaypalCheckoutButton';
 
 const completeTask = () => {
   Swal.fire({
