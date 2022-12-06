@@ -5,6 +5,11 @@ import Swal from 'sweetalert2';
 
 
 
+
+function validarPorcentaje(){
+  alert();
+}
+
 async function NuevaPenca(credentials) {
 
   
@@ -86,11 +91,13 @@ async function NuevaPenca(credentials) {
       input.min = 1; 
       input.max = 100; 
 
+
       input.style =  "background: rgb(23, 41, 49);; width: 150px; margin-bottom: 30px; color: rgb(200,200,200); display: inline-block; margin-right: 30px; border: none; border-bottom: 1px solid grey;";
       var gan = i + 1;
       input.id = 'inp' + gan;
       var placeh = "% Ganador " + gan;
       input.placeholder = placeh;
+
       document.getElementById('container').appendChild(input); // put it into the DOM
       
     }
@@ -202,7 +209,23 @@ useEffect(()=>{
     e.preventDefault();
 
     var cant = document.getElementById('ganadores').value;
+    var totalporcentaje = 0;
 
+    for(let i = 0; i < cant; i++){
+      totalporcentaje = totalporcentaje + parseInt(document.getElementById('inp'+(i+1)).value);
+    }
+
+    if(totalporcentaje > 100){
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Error!",
+        text: "La suma de los porcentajes de los ganadores no puede ser mayor a 100%",
+        icon: "error",
+        button: false
+    });
+    }else{
+  
     var inp1 = document.getElementById('inp1');
     if (inp1 !== null) {
       console.log('✅ Element exists');
@@ -245,6 +268,7 @@ useEffect(()=>{
 
 
     })
+  }
 }
 
   return (

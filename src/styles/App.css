@@ -135,8 +135,20 @@
   background: none;
   border: 1px solid white;
   color: white;
+  
 }
 
+
+.btn-github{
+  border-radius: 5px;
+  margin-top: 25px;
+  height: 35px;
+  background: none;
+  border: 1px solid white;
+  color: white;
+  display: inline-block;
+  margin-left: 20px;
+}
 
 
 
@@ -151,6 +163,16 @@
 
 
 }
+
+.btn-github:hover{
+  color: rgb(124, 214, 63);
+  border: 1px solid rgb(124, 214, 63);
+  box-shadow: 4px 2px 4px 4px #0c0c0c;
+
+
+
+}
+
 
 
 
@@ -297,6 +319,10 @@
   background-size: cover;
 }
 
+
+.br{
+  display: none;
+}
 
 .tablaranking{
   width: 60%;
@@ -464,6 +490,12 @@ nav{
 }
 
 
+.azulbarca{
+  background: rgb(52, 50, 102);
+  color: white;
+}
+
+
 .res{
   display: inline-block;
 }
@@ -556,6 +588,12 @@ nav{
 
 
 @media (max-width: 1050px){
+
+  .br{
+    display: block;
+  }
+
+
   .inputclass{
     width: 30px;
     color: white;

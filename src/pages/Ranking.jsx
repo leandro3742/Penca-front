@@ -3,10 +3,25 @@ import { createElement } from 'react';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 
+import Datatable from 'react-data-table-component';
+
+
+function sortByKey(array, key) {
+  return array.sort(function(a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+  });
+  }
+  
+  
+
 async function getRanking(idPenca){
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idPenca+ `&esCompartida=true`);
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idPenca+ `&esCompartida=`+localStorage.getItem('esCompartida'));
   
     response = await response.json();
+
+    response = sortByKey(response, 'puntos');
+  
 
     for(let i = 0; i < response.length; i++){
         var tr = document.createElement('tr');
@@ -32,9 +47,43 @@ async function getRanking(idPenca){
 
 export const Ranking = () => {
 
+ /* const ejemplo = [
+    {pos: 1, username: 'asdasd', pts: 55},
+    {pos: 2, username: 'asdasd', pts: 45},
+    {pos: 3, username: 'asdasd', pts: 35},
+    {pos: 4, username: 'asdasd', pts: 25}
+
+  ];
+
+  const columnas = [
+    {
+      name: 'pos',
+      selector: 'pos',
+      sortable: true
+    },
+    {
+      name: 'username',
+      selector: 'name',
+      sortable: true
+    },
+    {
+      name: 'pts',
+      selector: 'pts',
+      sortable: true
+    },
+  ]
+  
+  
+  <Datatable
+      columns={columnas}
+      data={ejemplo}
+    
+    />
+  */
+
     useEffect(()=>{
         
-        getRanking(1);
+        getRanking(localStorage.getItem('idpenca'));
     
       
        }, [])
@@ -46,6 +95,7 @@ export const Ranking = () => {
    <h1 style={{marginTop: '120px', color: 'rgb(200,200,200'}}>Ranking de </h1>
 
     <div id="divtable" className='tablaranking center' style={{ marginTop: '-250px'}}>
+    
     <table className="table table-striped table-dark  " >
   <thead>
     <tr>

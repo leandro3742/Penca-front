@@ -21,7 +21,7 @@ const PaypalCheckoutButton = (props) => {
                         purchase_units: [
                             {
                                 amount: {
-                                    value: pago,
+                                    value: product.precio,
                                 },
                             },
                         ],

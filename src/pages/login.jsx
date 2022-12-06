@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import Swal from 'sweetalert2';
+import LoginGithub from 'react-login-github';
+
 
 
 const fetchLogin = async (user, pass) => {
@@ -62,6 +64,34 @@ const fetchLogin = async (user, pass) => {
   }
 }
 
+
+const onSuccess = async response => {
+  let resp = response.code
+  console.log(response)
+  console.log(resp)
+  await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      "Content-Type":"application/json",
+
+      "Accept": "application/json"
+    },
+    body: {
+      "client_id": '436f3043b58384f9aacc',
+      "client_secret": '1245cfc8da6f1d37d199a7e32a94e361d77183bc',
+      "code": 'resp',
+      'redirect_uri': 'http://localhost:5173/login'
+    }
+  }).then(res => console.log(res)).catch(err => console.error(err))
+};
+
+
+const onFailure = response => console.error(response);
+
+
+
+
+
 const Login = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
@@ -73,14 +103,24 @@ const Login = () => {
 
             <input id="username" type="text" onChange={(e)=>setUserName(e.target.value)} placeholder='Ingrese su correo' className='form-control' style={{}} /><br /><br />
             <input id="pass" type="password" onChange={(e)=>setPassword(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
-            <div className='d-flex flex-column justify-content-center align-items-center'>
+            <div className='' style={{display: 'inline-block'}}>
               <button className='btn-verde' style={{marginTop: '60px'}} onClick={()=> fetchLogin(userName, password)}>Login</button><br />
-              <a href="/registro" className='labelregistro'>Todavía no tienes una cuenta? Click aquí para registrarte!</a>
+             
             </div>
 
-
+            <div className='' style={{display: 'inline-block'}}>
+            <LoginGithub className='btn-github' clientId="436f3043b58384f9aacc" scope={'user'} onSuccess={onSuccess} onFailure={onFailure} />
+             
+            </div>
+            <br /><br />
 
            
+
+
+
+
+            
+              <a href="/registro" className='labelregistro'>Todavía no tienes una cuenta? Click aquí para registrarte!</a>
        </div>
     </div>
   )

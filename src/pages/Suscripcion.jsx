@@ -62,7 +62,7 @@ const sendEmails = (credentials) => {
 }
 
 export const Suscripcion = () => {
-  const [pago, setPago] = useState("")
+  const [pago, setPago] = useState(0)
   const [estaPago, setEstaPago] = useState(false)
   const Link = "";
   const [nombre, setNombre] = useState();
@@ -140,7 +140,7 @@ export const Suscripcion = () => {
 
             <h3 id="precio" style={{marginTop: '70px', color:'rgb(200,200,200)'}}>{pago} US$</h3>
             
-            <PaypalCheckoutButton isOk={isOk} product={{id: 'elem.id', descripcion: '' ,tipoSub: "SEMANAL", nombre: 'elem.nombre', precio: pago}}/>
+            {pago && <PaypalCheckoutButton isOk={isOk} product={{id: 'elem.id', descripcion: '' ,tipoSub: "SEMANAL", nombre: 'elem.nombre', precio: pago}}/> }
           </div>
           }
 

@@ -6,34 +6,133 @@ import Swal from 'sweetalert2';
 
 
 
-async function Participar(credentials){
+async function calcularPremios(){
 
-  const settings = {
-    method: 'POST',
-    headers: {
-        "Content-Type":"application/json"
-    },
-    body: JSON.stringify(credentials)
-      
+  
+
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEventosTorneo?id=`+localStorage.getItem('torneo'));
+  response = await response.json();
+  var pencacompleta = true;
+
+  for(let i = 0; i < response.length; i++){
+    if(response[i]['resultado'] == '' || response[i]['resultado'] == null){
+        pencacompleta = false;
+    }
   }
-  console.log(JSON.stringify(credentials));
 
-  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarUsuario`, settings);
-  if(await response.json()){
-
-    localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
-    localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
-    localStorage.setItem('alertparticipacion', '0');
-
-    window.location.href = "/participacionpenca";
-
-
+  if(pencacompleta){
+    confirmarCalculo(document.getElementById('pencas').value);
+  }else{
+    Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Error!",
+        text: 'Para hacer el cálculo de premios, todos los eventos deben haber finalizado',
+        icon: "error",
+        button: false
+    });
   }
+
+
+
+
+    
+
+
+}
   
  
-    
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+    }
     
 
+async function confirmarCalculo(idP){
+
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idP+ `&esCompartida=true`);
+    response = await response.json();
+    response = sortByKey(response, 'puntos');
+
+
+    let pencas = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
+    pencas = await pencas.json();
+
+    var idcp = null;
+    var pozo = null;
+
+    for(let i = 0; i < pencas.length; i++){
+      if(pencas[i]['id'] == idP){
+        idcp = pencas[i]['criterioPremio'];
+        pozo = pencas[i]['pozo'];
+      }
+    }
+
+
+    if(idcp != null && pozo != null){
+      let percent = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPorcentajes?id_Criterio=`+idcp);
+      percent = await percent.json();
+
+      var usuarios = [];
+      var porcentajes = [];
+
+      for(let i = 0; i < percent.length; i++){
+        if(response[i]['userna'] != '' && response[i]['userna'] != null){
+          usuarios.push(response[i]['userna']);
+        }
+        porcentajes.push(percent[i]);
+      }
+
+      //alert(JSON.stringify(porcentajes));
+
+      //efectuarPago(usuarios, porcentajes, pozo, idP);
+
+
+      
+
+    }
+  
+    
+     
+
+
+    for(let i = 0; i < usuarios.length; i++ ){
+      var valor = pozo * (porcentajes[i] / 100);
+        agregarPremioUsuario({
+            username:usuarios[i],
+            idPenca:idP,
+            valorPremio:valor,
+            pago: false
+        });
+    }
+
+    if(localStorage.getItem("alertpremios") !== null){
+      window.location.reload();
+    }
+
+    
+
+
+}
+
+async function agregarPremioUsuario(credentials){
+
+    const settings = {
+        method: 'POST',
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(credentials)
+          
+      }
+      console.log(JSON.stringify(credentials));
+    
+      let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}agregarPremio`, settings);
+      if(await response.json()){
+        localStorage.setItem('alertpremios', '1');
+      }
 }
 
 
@@ -295,11 +394,24 @@ async function getEventos(idTorneo) {
   }
 
 
-export const VerPencas = () => {
+export const PencasCompartidas = () => {
 
 
     
  useEffect(()=>{
+
+  if(localStorage.getItem("alertpremios") !== null){
+    Swal.fire({
+      background: 'rgb(40,40,40)',
+      color: 'rgb(200,200,200)',
+      title: "Se han otorgado los premios correspondientes!",
+      icon: "success",
+      button: false,
+      timer:3000
+  });
+  localStorage.removeItem("alertpremios");
+
+  }
     document.getElementById('pencas').empty;
     getPencas(0);
     //getEventos();
@@ -321,7 +433,31 @@ export const VerPencas = () => {
    }, [])
 
    const handleSubmit = async (e) => {
+
+
     //e.preventDefault();
+
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPremios`);
+  
+    response = await response.json();
+    var existepremio = false;
+
+    for(let i = 0; i < response.length; i++){
+      if(response[i]['idPenca'] == document.getElementById('pencas').value){
+        existepremio = true;
+      }
+    }
+
+    if(existepremio){
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Ya se ha hecho el cálculo de premios para esta penca!",
+        icon: "error",
+        button: false
+    });
+    }else{
+
 
     //var idev = document.getElementsByClassName('idequipo').length;
     if(document.getElementById('pencas').value != ""){
@@ -330,7 +466,7 @@ export const VerPencas = () => {
       background: 'rgb(40,40,40)',
       color: 'rgb(200,200,200)',
       title: 'Solicitud de confirmación',
-      text: "Seguro que deseas participar en esta penca? El costo de entrada tiene un valor de $250 pesos uruguayos, por favor confirma para continuar",
+      text: "Seguro que deseas dar por finalizada esta penca y calcular los premios para sus participantes?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(103, 184, 209)',
@@ -339,15 +475,12 @@ export const VerPencas = () => {
       confirmButtonText: 'Si, confirmar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Participar({
-          username:sessionStorage.getItem('username'),
-          id_Penca:document.getElementById('pencas').value,
-          esCompartida: true
-        });
+        calcularPremios();
       }
     })
   
 
+  }
   }
 }
 
@@ -362,7 +495,7 @@ export const VerPencas = () => {
             <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{display: 'inline-block', marginLeft: '15px', width: '450px', float: 'left', height: '40px', color: 'white', background: 'rgb(36, 61, 73)'}} >
                 <option value="">Seleccione una penca</option>
             </select>
-            <input type="submit"  className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{display: 'inline-block', width: '150px', marginTop: '0px', marginLeft: '0px', background: 'rgb(85, 0, 0)', color: 'white'}} id="submit" value="Participar"/>
+            <input type="submit"  className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{display: 'inline-block', width: '150px', marginTop: '0px', marginLeft: '0px', background: 'rgb(85, 0, 0)', color: 'white'}} id="submit" value="Calcular Premios"/>
 
         </div>
         </div>

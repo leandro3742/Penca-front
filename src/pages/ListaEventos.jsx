@@ -4,7 +4,62 @@ import Swal from 'sweetalert2';
 
 
 
+
+async function actualizarRankingCompartida(){
+
+  var idTorneo = document.getElementById('torneos').value;
+
+  let pencas = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
+  pencas = await pencas.json();
+
+  for(let i = 0; i < pencas.length; i++){
+
+    if(pencas[i]['torneo'] == idTorneo){
+        actualizarcompartida(pencas[i]['id']);
+    }
+  }
+
+ 
+
+}
+
+async function actualizarRankingEmpresarial(){
+
+  var idTorneo = document.getElementById('torneos').value;
+
+  let pencas = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+  pencas = await pencas.json();
+
+  for(let i = 0; i < pencas.length; i++){
+
+    if(pencas[i]['torneo'] == idTorneo){
+        actualizarempresarial(pencas[i]['id']);
+    }
+  }
+
+ 
+
+}
+
+
+async function actualizarempresarial(idpenca){
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarPuntajes?id_Penca=`+idpenca+`&esCompartida=false`);
+  response = await response.json();
+}
+
+
+
+async function actualizarcompartida(idpenca){
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarPuntajes?id_Penca=`+idpenca+`&esCompartida=true`);
+  response = await response.json();
+}
+
+
+
 async function UpdateEvento(credentials) {
+
+  
+
 
   const settings = {
     method: 'PUT',
@@ -19,6 +74,8 @@ async function UpdateEvento(credentials) {
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}actualizarEvento`, settings);
   if(await response.json()){
 
+
+
     localStorage.setItem('actualizareventosalert', '1');
     window.location.reload();
     
@@ -26,6 +83,8 @@ async function UpdateEvento(credentials) {
 
   //document.getElementById('nombre').value = "";*/
   }
+
+  
 
 }
 //console.log(await response.json());
@@ -81,6 +140,9 @@ async function confirmarEvento(credentials){
     })
 
   })
+  actualizarRankingCompartida();
+  actualizarRankingEmpresarial();
+
 }
 
 

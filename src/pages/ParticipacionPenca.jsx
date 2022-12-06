@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 
 
-async function Pronosticar(credentials){
+async function Pronosticar(){
   
   localStorage.setItem('idpenca', document.getElementById(document.getElementById('pencas').value).value);
   localStorage.setItem('nombrepenca', document.getElementById('pencas').textContent);
@@ -18,7 +18,160 @@ async function Pronosticar(credentials){
 
 
 
-async function getEventosTorneo(idPenca) {
+function verRanking(idPenca){
+  localStorage.setItem('idpenca',idPenca);
+  window.location.href = "/ranking";
+
+}
+
+
+async function cobrarPremio(credentials){
+
+  const settings = {
+    method: 'PUT',
+    headers: {
+        "Content-Type":"application/json"
+    },
+    body: JSON.stringify(credentials)
+      
+  }
+  console.log(JSON.stringify(credentials));
+
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}pagarPremio/`+sessionStorage.getItem('username')+`/`+document.getElementById('pencas').value, settings);
+  if(await response.json()){
+
+
+
+    localStorage.setItem('cobrarpremiosalert', '1');
+    window.location.reload();
+    
+   
+
+  //document.getElementById('nombre').value = "";*/
+  }
+  
+}
+
+async function verPremios(nose) { 
+
+  let premios = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPremios`);
+  premios = await premios.json();
+
+  var existepremio = false;
+  var premio = 0;
+
+  var nomostrar = false;
+
+
+  for(let i = 0; i < premios.length; i++){
+    if(premios[i]['idPenca'] == document.getElementById('pencas').value && premios[i]['username'] == sessionStorage.getItem('username')  && premios[i]['pago'] == false){
+      existepremio = true;
+      premio = premios[i]['valorPremio'];
+    } 
+    if(premios[i]['idPenca'] == document.getElementById('pencas').value && premios[i]['username'] == sessionStorage.getItem('username')  && premios[i]['pago'] == true){
+      nomostrar = true;
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Felicitaciones!",
+        text: "Usted ha recibido un premio de $"+premios[i]['valorPremio']+' pesos uruguayos por su participación en esta penca',
+        icon: "info",
+        button: true
+    });
+    }
+  }
+
+
+  if(nomostrar == false){
+  if(existepremio){
+
+    Swal.fire({
+      background: 'rgb(40,40,40)',
+      color: 'rgb(200,200,200)',
+      text:'Ingrese los siguientes datos para que podamos depositarle',
+      title: "Tiene un premio a cobrar de $"+premio+" pesos uruguayos",
+      html: '<label>Ingrese los siguientes datos para que podamos depositarle</label><br><br><br><label style="float: left">Número de cuenta bancaria</label><input required id="numbanco" placeholder="Ingrese aquí su numero de cuenta..." type="text" class="form-control"/> <br> <label style="float: left">Nombre del banco</label><input id="banco" placeholder="Ingrese aquí el nombre del banco que usa..." type="text" class="form-control"/>',
+      icon: "info",
+      confirmButtonColor: 'rgb(103, 184, 209)',
+      showCancelButton: true,
+      cancelButtonColor: 'rgb(70,0,0)',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Cobrar Premio'
+    }).then((result) => {
+      if (result.isConfirmed) {
+       if(document.getElementById('numbanco').value == '' || document.getElementById('banco').value == ''){
+        Swal.fire({
+          background: 'rgb(40,40,40)',
+          color: 'rgb(200,200,200)',
+          title: "Error",
+          text: "No puedes dejar campos vacíos si quieres cobrar el premio",
+          icon: "error",
+          button: true
+      });
+       }else{
+        cobrarPremio({
+          username:sessionStorage.getItem('username'),
+          idPenca:document.getElementById('pencas').value
+        });
+       }
+      }
+    })
+
+    
+  }else{
+
+
+
+  var idpenca = document.getElementById('pencas').value;
+  var criterioPremios = "";
+  var pozo = "";
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
+  response = await response.json();
+
+  for(let i = 0; i < response.length; i++){
+    if(response[i]['id'] == idpenca){
+      criterioPremios = response[i]['criterioPremio'];
+      pozo = response[i]['pozo'];
+    }
+  }
+
+  if(criterioPremios != ""){
+    verCriterioPremios(criterioPremios, pozo);
+  }
+}
+}
+
+async function verCriterioPremios(idcp, pozo) { 
+
+  let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPorcentajes?id_Criterio=`+idcp);
+  response = await response.json();
+  var premios = '';
+  for(let i = 0; i < response.length; i++){
+    premios = premios + '<p style="color: rgb(200,200,200); margin-top: 30px" >'+ (i+1)+'°: ' + response[i] +'% del pozo ($'+(pozo*(response[i]/100)) + ' pesos uruguayos) </p>'; 
+  }
+
+
+  
+  Swal.fire({
+    background: 'rgb(40,40,40)',
+    color: 'rgb(200,200,200)',
+    title: "Pozo actual: $" + pozo,
+    html: premios,
+    icon: "info",
+    button: true
+});
+}
+}
+
+
+
+
+
+async function getEventosTorneo(idPenca, posicion) {
+
+  localStorage.setItem('esCompartida', document.getElementById('esCompartida'+posicion).value);
+
+  //alert(document.getElementById('esCompartida'+posicion).value);
    /*var className = document.getElementsByClassName('borrar');
    for(var index=0;index < className.length;index++){
         alert(className.length + ' - ' + index);
@@ -28,10 +181,20 @@ async function getEventosTorneo(idPenca) {
    }*/
     // Get all elements of class B
     //alert(document.querySelectorAll("#eventos").length);
+
+
     if(idPenca == ''){
       document.getElementById('editar').hidden = true;
+      document.getElementById('ranking').hidden = true;
+      document.getElementById('premios').hidden = true;
+
+
     }else{
       document.getElementById('editar').hidden = false;
+      document.getElementById('ranking').hidden = false;
+      document.getElementById('premios').hidden = false;
+
+
 
     }
 
@@ -42,6 +205,12 @@ async function getEventosTorneo(idPenca) {
       // Swap the text as well
       //div.textContent = "Class A";
     })
+
+
+
+
+    if(document.getElementById('esCompartida'+posicion).value == 'true'){
+
 
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
@@ -62,6 +231,33 @@ async function getEventosTorneo(idPenca) {
     
     getEventos(idTorneo);
 
+  }
+
+  if(document.getElementById('esCompartida'+posicion).value == 'false'){
+
+
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+  
+    response = await response.json();
+
+    //console.log(response[0]['nombre']);
+
+
+     var idTorneo = -1;
+    for(let i = 0; i < response.length; i++){
+
+      if(response[i]['id'] == idPenca){
+        idTorneo = response[i]['torneo'];
+      }
+    }
+
+        
+    
+    getEventos(idTorneo);
+
+  }
+
+
 
 
 }
@@ -69,39 +265,175 @@ async function getEventosTorneo(idPenca) {
 
 
 async function getPencas(idTorneo) {
-   
-
 
     let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarCompartida`);
   
     response = await response.json();
+    var pencas = [];
+    var esCompartida = [];
+    
+
+  for(let i = 0; i < response.length; i++){
+
+    let userpenca = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarioPenca?id_Penca=`+response[i]['id']+`&esCompartida=true`);
+    userpenca = await userpenca.json();
+
+    for(let x = 0; x < userpenca.length; x++){
+      if(userpenca[x]['username'] == sessionStorage.getItem('username')){
+        pencas.push(response[i]['id']);
+        esCompartida.push('true');
+      }
+    }
+  }
+  
+
+    let response1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarEmpresarial`);
+
+    if(response1.status == 200 || response1.status == 201){
+  
+    response1 = await response1.json();
+    var pencas1 = [];
+
+  for(let i = 0; i < response1.length; i++){
+
+    let userpenca1 = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarioPenca?id_Penca=`+response1[i]['id']+`&esCompartida=false`);
+    userpenca1 = await userpenca1.json();
+
+    for(let x = 0; x < userpenca1.length; x++){
+      if(userpenca1[x]['username'] == sessionStorage.getItem('username')){
+        pencas1.push(response1[i]['id']);
+        pencas.push(response1[i]['id']);
+        esCompartida.push('false');
+
+      }
+    }
+  }
+  
+    
+  }
+
+
+
+    for(let x = 0; x < esCompartida.length; x++){
+      var esc = document.createElement('input');
+      esc.style.display = 'none';
+      esc.value = esCompartida[x];
+      esc.id = 'esCompartida'+x;
+      document.getElementById('principal').appendChild(esc);
+
+    }
 
     //console.log(response[0]['nombre']);
 
 
-
     for(let i = 0; i < response.length; i++){
-      let t = document.getElementById('pencas');
-      var opt = document.createElement('option');
-      opt.value = response[i]['id'];
-      opt.id = response[i]['id'];
-      opt.innerHTML = response[i]['nombre'];
+      
+
+
+      for(let it = 0; it < pencas.length; it++){
+        
+      if(esCompartida[it] == 'true'){
+
+        if(pencas[it] == response[i]['id']){
+
+
+              let t = document.getElementById('pencas');
+              var opt = document.createElement('option');
+              opt.value = response[i]['id'];
+              opt.id = response[i]['id'];
+              opt.innerHTML = response[i]['nombre'];
+
+              
+              var idp = document.createElement("input");
+              idp.id = response[i]['nombre'];
+              idp.style.display = 'none';
+              idp.value = response[i]['id'];
+              document.getElementById('principal').appendChild(idp);
+
+
+
+
+              t.appendChild(opt); 
+        }
+      }
+    }
+  }
+
+
+ for(let i = 0; i < response1.length; i++){
+
+  for(let it = 0; it < pencas.length; it++){
 
       
-      var idp = document.createElement("input");
-      idp.id = response[i]['nombre'];
-      idp.style.display = 'none';
-      idp.value = response[i]['id'];
-      document.getElementById('principal').appendChild(idp);
+      if(esCompartida[it] == 'false'){
+        if(pencas[it] == response1[i]['id']){
+
+          let t = document.getElementById('pencas');
+          var opt = document.createElement('option');
+          opt.value = response1[i]['id'];
+          opt.id = response1[i]['id'];
+          opt.innerHTML = response1[i]['nombre'];
+
+          
+          var idp = document.createElement("input");
+          idp.id = response1[i]['nombre'];
+          idp.style.display = 'none';
+          idp.value = response1[i]['id'];
+          document.getElementById('principal').appendChild(idp);
+
+
+
+
+          t.appendChild(opt); 
+    }
+      }
+      }
+
+    }
+    
+
+
+
+
+    
+
+
+
+/*
+    
+    for(let i = 0; i < response1.length; i++){
+      
+
+
+      for(let it = 0; it < pencas1.length; it++){
+
+        if(pencas1[it] == response1[i]['id']){
+
+          let t = document.getElementById('pencas');
+          var opt = document.createElement('option');
+          opt.value = response1[i]['id'];
+          opt.id = response1[i]['id'];
+          opt.innerHTML = response1[i]['nombre'];
+
+          
+          var idp = document.createElement("input");
+          idp.id = response1[i]['nombre'];
+          idp.style.display = 'none';
+          idp.value = response1[i]['id'];
+          document.getElementById('principal').appendChild(idp);
 
 
 
 
       t.appendChild(opt); 
-    }
+        }
+      }
+    }*/
 
-   
   }
+
+
+
 
 
 
@@ -243,6 +575,19 @@ export const ParticipacionPenca = () => {
     document.getElementById('pencas').empty;
     getPencas(0);
     //getEventos();
+    if(localStorage.getItem("cobrarpremiosalert") !== null){
+      Swal.fire({
+        background: 'rgb(40,40,40)',
+        color: 'rgb(200,200,200)',
+        title: "Perfecto!",
+        text: 'Pronto te depositarán tu premio',
+        icon: "success",
+        button: true
+    });
+    localStorage.removeItem("cobrarpremiosalert");
+
+    }
+
     if(localStorage.getItem("alertparticipacion") !== null){
       Swal.fire({
         background: 'rgb(40,40,40)',
@@ -252,7 +597,7 @@ export const ParticipacionPenca = () => {
         icon: "success",
         button: true
     });
-    localStorage.removeItem("alertparticipacion")
+    localStorage.removeItem("alertparticipacion");
 
     }
 
@@ -261,7 +606,7 @@ export const ParticipacionPenca = () => {
       Swal.fire({
         background: 'rgb(40,40,40)',
         color: 'rgb(200,200,200)',
-        title: "Se han actualizado los pronosticos correctamente!",
+        title: "Se han actualizado los eventos correctamente!",
         icon: "success",
         button: false,
         timer:3000
@@ -278,8 +623,19 @@ export const ParticipacionPenca = () => {
 
     //var idev = document.getElementsByClassName('idequipo').length;
 
-    Pronosticar();
+   Pronosticar();
   
+
+
+}
+
+const handleSubmit1 = async (e) => {
+  //e.preventDefault();
+
+  //var idev = document.getElementsByClassName('idequipo').length;
+
+ verRanking(document.getElementById('pencas').value);
+
 
 
 }
@@ -291,13 +647,16 @@ export const ParticipacionPenca = () => {
 
         <div>
           <h5 style={{float: 'left', marginLeft: '10vh', color: 'rgb(200,200,200)', marginTop: '50px', lineHeight: '40px'}}>Pencas en las que participo:     </h5>
-        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
+        <select id="pencas" className='form-control' onChange={e => getEventosTorneo(e.target.value, e.target.selectedIndex-1)} style={{width: '50%', height: '40px', marginTop: '50px', marginLeft: '130px', color: 'white', background: 'rgb(36, 61, 73)'}} >
             <option value="">Seleccione una penca</option>
         </select>
         </div>
 
-        <div>
-        <input type="submit" id="editar"  hidden="hidden" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Editar Pronósticos"/>
+        <div id="acciones">
+        <input type="button" id="editar"  hidden="hidden" className="btn btn-login " onClick={e => handleSubmit(e.target.value)} style={{color: 'white', background: 'rgb(0, 4, 45)', width: '180px', marginTop: '50px', marginLeft: '5vh'}} value="Mis Pronósticos"/><br className='br' />
+        <input type="button" id="ranking" hidden="hidden" className="btn btn-login " onClick={e => handleSubmit1(e.target.value)} style={{color: 'white', background: 'rgb(0, 4, 45)', width: '180px', marginTop: '50px', marginLeft: '5vh'}} value="Posiciones"/> 
+        <input type="button" id="premios" hidden="hidden" className="btn btn-login " onClick={e => verPremios(e.target.value)} style={{color: 'white', background: 'rgb(0, 4, 45)', width: '180px', marginTop: '50px', marginLeft: '5vh'}} value="Premios"/> 
+
         </div>
         
 
