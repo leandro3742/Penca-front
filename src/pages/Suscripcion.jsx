@@ -109,7 +109,10 @@ export const Suscripcion = () => {
       let id_penca = pencas[pencas.length - 1].id
       let response2 = await createSuscription({id_PencaEmpresarial: id_penca, rut: 'ff', nroTar_Credito: 'ff', Username_Usuario: email})
       if(response2){
-        sendEmails({emails: list, link:`http://localhost:5173/altaPeca/${id_penca}`})
+        let aux = email.replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
+        aux = aux.replaceAll('@', '123456789')
+        aux = aux.replaceAll('.', 'punto')
+        sendEmails({emails: list, link:`http://localhost:5173/confirmar/${id_penca}/${aux}`})
         setEstaPago(false)
         completeTask()
       }

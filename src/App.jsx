@@ -22,6 +22,7 @@ import { MisPencas } from './pages/MisPencas';
 import { Ranking } from './pages/Ranking';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PencasCompartidas } from './pages/PencasCompartidas';
+import Confirmar from './pages/Confirmar';
 
 
 
@@ -80,6 +81,7 @@ function App() {
             <Route path="/MisPencas" element={<MisPencas />} />
             <Route path="/Ranking" element={<Ranking />} />
             <Route path="/PencasCompartidas" element={<PencasCompartidas />} />
+            <Route path="/confirmar/:id/:email" element={<Confirmar />} />
         </Routes>
       </BrowserRouter>
     </PayPalScriptProvider>
