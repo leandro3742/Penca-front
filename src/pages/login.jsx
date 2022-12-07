@@ -66,23 +66,41 @@ const fetchLogin = async (user, pass) => {
 
 
 const onSuccess = async response => {
-  let resp = response.code
-  console.log(response)
+  let resp = await response.code
+  let aux;
   console.log(resp)
-  await fetch('https://github.com/login/oauth/access_token', {
+  await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/LoginSocial`, {
     method: 'POST',
     headers: {
       "Content-Type":"application/json",
-
       "Accept": "application/json"
     },
-    body: {
-      "client_id": '436f3043b58384f9aacc',
-      "client_secret": '1245cfc8da6f1d37d199a7e32a94e361d77183bc',
-      "code": 'resp',
-      'redirect_uri': 'http://localhost:5173/login'
-    }
-  }).then(res => console.log(res)).catch(err => console.error(err))
+    body: JSON.stringify(resp)
+  }).then(async res => aux = await res.json()).catch(err => console.error(err))
+  if(aux.email){
+    window.location.href = "/";
+    sessionStorage.setItem('username', response.email);
+    sessionStorage.setItem('token', response.token);
+    sessionStorage.setItem('f5', 'recargar');
+    Swal.fire({
+      background: 'rgb(40,40,40)',
+      color: 'rgb(200,200,200)',
+      text: 'Bienvenido '+aux.email,
+      icon: 'success',
+      confirmButtonColor: 'rgb(103, 184, 209)',
+      confirmButtonText: 'Ok'
+    })
+  }
+  else{
+    Swal.fire({
+      background: 'rgb(40,40,40)',
+      color: 'rgb(200,200,200)',
+      text: 'No pudimos verificar tus datos',
+      icon: 'error',
+      confirmButtonColor: 'rgb(103, 184, 209)',
+      confirmButtonText: 'Ok'
+    })
+  }
 };
 
 
