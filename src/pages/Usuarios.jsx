@@ -13,46 +13,69 @@ function sortByKey(array, key) {
   });
   }
   
-  
+  async function getUsuarios(){
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarUsuarios`);
+    response = await response.json();
 
-async function getRanking(idPenca){
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPuntajeUsuarioPenca?id_Penca=`+idPenca+ `&esCompartida=`+localStorage.getItem('esCompartida'));
+    sortByKey(response, 'username');
+
+    for(let i = 0; i < response.length; i++){
+        getRoles(response[i]['username'], response[i]['nombre'], response[i]['apellido']);
+    }
+
+
+}
+
+async function getRoles(us, nom, ape){
+    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarSubscripcionesUsuario?username=`+us);
   
     response = await response.json();
 
-    response = sortByKey(response, 'puntos');
-  
 
-    for(let i = 0; i < response.length; i++){
+    let roles = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/ObtenerRoles?username=`+us);
+    roles = await roles.json();
+        var esadmin = 'User';
+        for(let i = 0; i<roles.length; i++){
+            if(roles[i] == 'ADMIN'){
+                esadmin = 'Admin';
+            }
+        }
+
+    
+
         var tr = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
         var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
 
-        td1.innerHTML = i + 1;
-        td2.innerHTML = response[i]['userna'];
-        td3.innerHTML = response[i]['puntos'];
 
-        if(response[i]['userna'] == sessionStorage.getItem('username')){
-          td1.style.color = 'green';
-          td1.innerHTML ='(Yo) ' + td1.innerHTML;
-          td2.style.color = 'green';
-          td3.style.color = 'green';
+        td1.innerHTML = us;
+        td2.innerHTML = nom + ' ' + ape;
+        td3.innerHTML = response.length + ' Suscripciones';
+        if(esadmin == 'Admin'){td3.innerHTML = ' - ';}
+        td4.innerHTML = esadmin;
+
+        if(response.length > 0){
+            td3.style.color = 'green';
         }
 
 
         tr.appendChild(td1);
         tr.appendChild(td2);
+        tr.appendChild(td4);
         tr.appendChild(td3);
+
+
 
 
         document.getElementById('tablebody').appendChild(tr);
     }
 
-}
 
 
-export const Ranking = () => {
+
+export const Usuarios = () => {
 
  /* const ejemplo = [
     {pos: 1, username: 'asdasd', pts: 55},
@@ -90,7 +113,7 @@ export const Ranking = () => {
 
     useEffect(()=>{
         
-        getRanking(localStorage.getItem('idpenca'));
+        getUsuarios();
     
       
        }, [])
@@ -99,16 +122,17 @@ export const Ranking = () => {
   return (
     <div id="principal" className='grid-container-element11 ranking' >
 
-   <h1 style={{marginTop: '120px', color: 'rgb(200,200,200'}}>Ranking</h1>
+   <h1 style={{marginTop: '120px', color: 'rgb(200,200,200'}}>Lista de Usuarios </h1>
 
     <div id="divtable" className='tablaranking center' >
     
-    <table className="table table-striped table-dark  " >
+    <table style={{maxHeight: '120px'}} className="table table-striped table-dark  " >
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Usuario</th>
-      <th scope="col">Puntaje</th>
+      <th scope="col">Username</th>
+      <th scope="col">Nombre y Apellido</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Subscripciones</th>
     </tr>
   </thead>
   <tbody id="tablebody">

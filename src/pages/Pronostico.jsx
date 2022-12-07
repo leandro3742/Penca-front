@@ -152,8 +152,8 @@ async function getEventos() {
         res1.id = 'resequipo1' + response[i]['id'];
         res1.classList = 'inputclass arrows borrar floatleft';
         res1.type = 'number';
-
-        let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=`+user+`&id_Penca=`+idpe);
+        var esComp = localStorage.getItem('esCompartida');
+        let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=`+user+`&id_Penca=`+idpe+`&esCompartida=`+ esComp);
         //let pronostico = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPronosticosUsuario?username=facundo@bunker360.com&id_Penca=1`);
 
         pronostico = await pronostico.json();

@@ -115,6 +115,10 @@ export const Navegacion = (props) => {
                 </li>
 
                 <li style={{marginLeft: '30px'}} className="nav-item active">
+                    <a className="nav-link" href="/usuarios">Usuarios</a>
+                </li>
+
+                <li style={{marginLeft: '30px'}} className="nav-item active">
                     <button onClick={e => logout(e.target.value)} className='btn-logout'>Cerrar Sesión ⇥</button>
                 </li>
                
