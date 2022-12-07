@@ -26,6 +26,20 @@ import Confirmar from './pages/Confirmar';
 import { Usuarios } from './pages/Usuarios';
 
 
+async function getRoles(username){
+  let aux = false;
+  let response;
+  await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/ObtenerRoles?username=`+ username).then(async res => response = await res.json());
+  //response = await response.json();
+
+  for(let i = 0; i<response.length; i++){
+      if(response[i] == 'ADMIN'){
+          aux = true;
+      }
+  }
+  return aux;
+  //alert('dentro de funcion ' + adm);
+ }
 
 
 
@@ -38,6 +52,13 @@ import { Usuarios } from './pages/Usuarios';
 // }
 
 function App() {
+
+  const [admin,setRol] = useState();
+    async function funcion(){
+        let response = await getRoles(sessionStorage.getItem('username'));
+        setRol(response);
+    }
+
   // const [data, setData] = useState([])
   
   // const A = async (url) => {
@@ -48,7 +69,7 @@ function App() {
   // useEffect(() => {
   //   A(import.meta.env.VITE_BACKEND_SERVICE)
   // }, []);
-
+  funcion();
   return (
     <div style={{}}>
       <Navegacion>    </Navegacion>
@@ -67,23 +88,23 @@ function App() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/AltaTorneo" element={<AltaTorneo />} />
-            <Route path="/AltaEvento" element={<AltaEvento />} />
+            {admin == true && <Route path="/AltaTorneo" element={<AltaTorneo />} />}
+            {admin == true && <Route path="/AltaEvento" element={<AltaEvento />} />}
             <Route path="/Registro" element={<Registro />} />
             <Route path="/AltaPenca" element={<AltaPenca />} />
-            <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />
+            {admin == true && <Route path="/AltaPencaCompartida" element={<AltaPencaCompartida />} />}
             <Route path="/AltaPencaEmpresarial" element={<AltaPencaEmpresarial />} />
-            <Route path="/listaTorneos" element={<ListaTorneos />} />
-            <Route path="/listaEventos" element={<ListaEventos />} />
-            <Route path="/Pronostico" element={<Pronostico />} />
-            <Route path="/VerPencas" element={<VerPencas />} />
-            <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />
-            <Route path="/Suscripcion" element={<Suscripcion />} />
-            <Route path="/MisPencas" element={<MisPencas />} />
+            {admin == true && <Route path="/listaTorneos" element={<ListaTorneos />} />}
+            {admin == true && <Route path="/listaEventos" element={<ListaEventos />} />}
+            {admin == false && <Route path="/Pronostico" element={<Pronostico />} />}
+            {admin == false && <Route path="/VerPencas" element={<VerPencas />} />}
+            {admin == false && <Route path="/ParticipacionPenca" element={<ParticipacionPenca />} />}
+            {admin == false && <Route path="/Suscripcion" element={<Suscripcion />} />}
+            {admin == false && <Route path="/MisPencas" element={<MisPencas />} />}
             <Route path="/Ranking" element={<Ranking />} />
-            <Route path="/PencasCompartidas" element={<PencasCompartidas />} />
+            {admin == true && <Route path="/PencasCompartidas" element={<PencasCompartidas />} />}
             <Route path="/confirmar/:id/:email" element={<Confirmar />} />
-            <Route path="/Usuarios" element={<Usuarios />} />
+            {admin == true && <Route path="/Usuarios" element={<Usuarios />} />}
 
         </Routes>
       </BrowserRouter>

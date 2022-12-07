@@ -2,6 +2,70 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 
+        async function unlog(e){
+            Swal.fire({
+                position: 'top',
+                background: 'rgb(40,40,40)',
+                color: 'rgb(200,200,200)',
+                confirmButtonText: 'Login',
+                confirmButtonColor: 'rgb(40,80,40)'
+                
+            }).then((result) => {
+                if (result.isConfirmed) {
+                
+
+                window.location.href = '/login';
+
+
+                }
+            })
+        }
+
+
+
+    async function opciones(e){
+        Swal.fire({
+            position: 'top',
+            background: 'rgb(40,40,40)',
+            color: 'rgb(200,200,200)',
+            html: "<a style='text-decoration: none; color: white; font-weight: bold' href='/suscripcion'>Crear Penca </a> <br> <br> <a style='text-decoration: none; color: white; font-weight: bold' href='/verpencas'>Explorar Pencas </a> <br> <br> <a style='text-decoration: none; color: white; font-weight: bold' href='/mispencas'>Mis Pencas </a> <br> <br><a style='text-decoration: none; color: white; font-weight: bold' href='/participacionpenca'>Mis Participaciones </a> <br> <br>",
+            confirmButtonText: 'Logout',
+            confirmButtonColor: 'rgb(40,40,40)'
+            
+          }).then((result) => {
+            if (result.isConfirmed) {
+             
+    
+              logout();
+    
+    
+            }
+          })
+       }
+
+
+       async function opcionesAdmin(e){
+        Swal.fire({
+            position: 'top',
+            background: 'rgb(40,40,40)',
+            color: 'rgb(200,200,200)',
+            html: "<a style='text-decoration: none; color: white; font-weight: bold' href='/listaeventos'>Resultados</a> <br> <br> <a style='text-decoration: none; color: white; font-weight: bold' href='/altapencacompartida'>Nueva Penca </a> <br> <br> <a style='text-decoration: none; color: white; font-weight: bold' href='/altaevento'>Nuevo Evento </a> <br> <br><a style='text-decoration: none; color: white; font-weight: bold' href='/altatorneo'>Nuevo Torneo </a> <br> <br><a style='text-decoration: none; color: white; font-weight: bold' href='/pencascompartidas'>Ver Pencas </a> <br> <br><a style='text-decoration: none; color: white; font-weight: bold' href='/usuarios'>Usuarios </a> <br><br> <br>",
+            confirmButtonText: 'Logout',
+            confirmButtonColor: 'rgb(110,40,40)'
+            
+          }).then((result) => {
+            if (result.isConfirmed) {
+             
+    
+              logout();
+    
+    
+            }
+          })
+       }
+    
+
+
 
    async function logout(){
     
@@ -29,29 +93,38 @@ import Swal from 'sweetalert2';
       })
    }
 
-var adm = 0;
    async function getRoles(username){
-    let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/ObtenerRoles?username=`+ username);
-    response = await response.json();
-    localStorage.setItem('ad','false');
+    let aux = 'false';
+    let response;
+    await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Auth/ObtenerRoles?username=`+ username).then(async res => response = await res.json());
+    //response = await response.json();
+
     for(let i = 0; i<response.length; i++){
         if(response[i] == 'ADMIN'){
-            adm = 1;
-            localStorage.setItem('ad','true');
+            aux = 'true';
         }
     }
-
+    return aux;
     //alert('dentro de funcion ' + adm);
    }
 
 
 export const Navegacion = (props) => {
+    const [rol,setRol] = useState();
+    async function funcion(){
+        let response = await getRoles(sessionStorage.getItem('username'));
+        setRol(response);
+    }
+
 
 
     useEffect(()=>{
         //getRoles('facundo@bunker360.com');
         //getRoles('facu_camilo@hotmail.com');
-        getRoles(sessionStorage.getItem('username'));
+
+        funcion();
+        //console.log(a);
+
 
        // alert('dentro de useeffect ' + adm);
 
@@ -79,14 +152,14 @@ export const Navegacion = (props) => {
 
     if(sesion != null && sesion != ""){
 
-        if(localStorage.getItem('ad') == 'true'){
+        if(rol == 'true'){
             
-            localStorage.removeItem('ad');
+            //localStorage.removeItem('ad');
 
     return (
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <button onClick={e => opcionesAdmin(e.target.value)} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="true" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
             <a href="/" style={{cursor: 'pointer'}}><label className="navbar-brand" style={{marginLeft: '20px',cursor: 'pointer'}} href="">PencaNet</label></a>
@@ -137,14 +210,14 @@ export const Navegacion = (props) => {
 
     }else{
 
-        localStorage.removeItem('ad');
+        
 
         return (
             <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+           <button onClick={e => opciones(e.target.value)} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="true" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
                 <a href="/" style={{cursor: 'pointer'}}><label className="navbar-brand" style={{marginLeft: '20px',cursor: 'pointer'}} href="">PencaNet</label></a>
     
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
@@ -189,7 +262,7 @@ export const Navegacion = (props) => {
         return (
             <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light barra fixed-top navbar-dark bg-dark" >
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <button onClick={e => unlog(e.target.value)} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <a href="/" style={{cursor: 'pointer'}}><label className="navbar-brand" style={{marginLeft: '20px',cursor: 'pointer'}} href="">PencaNet</label></a>

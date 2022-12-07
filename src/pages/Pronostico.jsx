@@ -162,6 +162,7 @@ async function getEventos() {
             res1.value = pronostico[x]['golesEquipo1'];
           }
         }
+        var pronosticoequipo1 = res1.value;
           //res1.value = response[i]['golesEquipo1'];
         res1.style = 'background: rgb(30,30,30)';
         div.appendChild(res1);
@@ -197,11 +198,15 @@ async function getEventos() {
         res2.id = 'resequipo2' + response[i]['id'];
         res2.classList = 'inputclass arrows borrar';
 
+        
+
         for(let x = 0; x < pronostico.length; x++){
           if(pronostico[x]['id_Evento'] == eventoid){
             res2.value = pronostico[x]['golesEquipo2'];
           }
         }
+        var pronosticoequipo2 = res2.value;
+
         //res2.value = response[i]['golesEquipo2'];
         div.appendChild(res2);
 
@@ -227,7 +232,24 @@ async function getEventos() {
         fin.style.color = "rgb(85,85,85)";
         fin.style.marginTop = "30px";
 
-        fin.innerHTML = 'Finalizado <br/>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
+        var puntosxpartido = 0;
+
+        if((pronosticoequipo1 < pronosticoequipo2 && response[i]['golesEquipo1'] < response[i]['golesEquipo2']) || (pronosticoequipo1 > pronosticoequipo2 && response[i]['golesEquipo1'] > response[i]['golesEquipo2']) || (pronosticoequipo1 == pronosticoequipo2 && response[i]['golesEquipo1'] == response[i]['golesEquipo2'])){
+          puntosxpartido = puntosxpartido + 3;
+          if(pronosticoequipo1 == response[i]['golesEquipo1']){
+            puntosxpartido = puntosxpartido + 1;
+          }
+          if(pronosticoequipo2 == response[i]['golesEquipo2']){
+            puntosxpartido = puntosxpartido + 1;
+          }
+        }
+
+        if(pronosticoequipo1 == response[i]['golesEquipo1'] && pronosticoequipo2 == response[i]['golesEquipo2']){
+          puntosxpartido = 5;
+        }
+
+
+        fin.innerHTML = 'Evento Finalizado ' + '- '+ puntosxpartido + ' puntos <br>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
         fin.classList = 'borrar';
 
         if(response[i]['resultado'] == ""){
@@ -394,7 +416,7 @@ export const Pronostico = () => {
 
 
         <div className='resp1' style={{ }}>
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', float: 'right', marginRight: '50px'}} value="Confirmar Pronósticos"/>
+        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', color:'white', background: 'rgb(0, 4, 45)', marginTop: '50px', float: 'right', marginRight: '50px'}} value="Confirmar Pronósticos"/>
         </div>
 
 

@@ -22,7 +22,7 @@ async function getRanking(idPenca){
   
   response = await response.json();
 
-  console.log(response); alert();
+  console.log(response);
 
   response = sortByKey(response, 'puntos');
 

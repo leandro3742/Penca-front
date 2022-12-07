@@ -143,6 +143,7 @@ async function verPremios(nose) {
 
 async function verCriterioPremios(idcp, pozo) { 
 
+
   let response = await fetch(`${import.meta.env.VITE_BACKEND_SERVICE}listarPorcentajes?id_Criterio=`+idcp);
   response = await response.json();
   var premios = '';
@@ -190,9 +191,19 @@ async function getEventosTorneo(idPenca, posicion) {
 
 
     }else{
-      document.getElementById('editar').hidden = false;
-      document.getElementById('ranking').hidden = false;
-      document.getElementById('premios').hidden = false;
+      if(localStorage.getItem('esCompartida') == 'true'){
+        document.getElementById('editar').hidden = false;
+        document.getElementById('ranking').hidden = false;
+        document.getElementById('premios').hidden = false;
+      }else{
+
+      if(localStorage.getItem('esCompartida') == 'false'){
+        document.getElementById('editar').hidden = false;
+        document.getElementById('ranking').hidden = false;
+        document.getElementById('premios').hidden = true;
+
+      }
+    }
 
 
 

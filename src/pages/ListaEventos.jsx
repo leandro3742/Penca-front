@@ -390,7 +390,7 @@ export const ListaEventos = () => {
             <option value="">Seleccione un torneo</option>
         </select>
         
-        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(103, 184, 209)', marginTop: '50px', marginLeft: '-25vh'}} value="Actualizar Resultados"/>
+        <input type="submit" className="btn btn-login" onClick={e => handleSubmit(e.target.value)} style={{width: '180px', background: 'rgb(0, 4, 45)', color: 'white', marginTop: '50px', marginLeft: '-25vh'}} value="Actualizar Resultados"/>
         
         
         
