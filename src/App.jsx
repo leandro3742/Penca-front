@@ -24,7 +24,8 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PencasCompartidas } from './pages/PencasCompartidas';
 import Confirmar from './pages/Confirmar';
 import { Usuarios } from './pages/Usuarios';
-
+import Estadisticas from './pages/Estadisticas';
+import EditarPass from './pages/EditarPass';
 
 async function getRoles(username){
   let aux = false;
@@ -105,7 +106,8 @@ function App() {
             {admin == true && <Route path="/PencasCompartidas" element={<PencasCompartidas />} />}
             <Route path="/confirmar/:id/:email" element={<Confirmar />} />
             {admin == true && <Route path="/Usuarios" element={<Usuarios />} />}
-
+            <Route path='/estadisticas' element={<Estadisticas />} />
+            <Route path='/editarPass' element={<EditarPass />} />
         </Routes>
       </BrowserRouter>
     </PayPalScriptProvider>
