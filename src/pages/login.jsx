@@ -123,14 +123,15 @@ const Login = () => {
             <input id="pass" type="password" onChange={(e)=>setPassword(e.target.value)} placeholder='Ingrese su contraseña' className='form-control' />
             <div className='' style={{display: 'inline-block'}}>
               <button className='btn-verde' style={{marginTop: '60px'}} onClick={()=> fetchLogin(userName, password)}>Login</button><br />
-             
             </div>
 
             <div className='' style={{display: 'inline-block'}}>
             <LoginGithub className='btn-github' clientId="436f3043b58384f9aacc" scope={'user'} onSuccess={onSuccess} onFailure={onFailure} />
              
             </div>
-            <br /><br />
+            <div className='mt-3 mb-2'>
+              <a href='/recuperar' className='labelregistro' style={{marginTop: '60px'}} >Olvide mi contraseña</a><br />
+            </div>
 
            
 

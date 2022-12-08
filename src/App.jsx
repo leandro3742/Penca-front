@@ -26,6 +26,7 @@ import Confirmar from './pages/Confirmar';
 import { Usuarios } from './pages/Usuarios';
 import Estadisticas from './pages/Estadisticas';
 import EditarPass from './pages/EditarPass';
+import OlvidePass from './pages/OlvidePass';
 
 async function getRoles(username){
   let aux = false;
@@ -108,6 +109,7 @@ function App() {
             {admin == true && <Route path="/Usuarios" element={<Usuarios />} />}
             <Route path='/estadisticas' element={<Estadisticas />} />
             <Route path='/editarPass' element={<EditarPass />} />
+            <Route path='/recuperar' element={<OlvidePass />} />
         </Routes>
       </BrowserRouter>
     </PayPalScriptProvider>
