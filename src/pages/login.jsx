@@ -78,6 +78,15 @@ const onSuccess = async response => {
     body: JSON.stringify(resp)
   }).then(async res => aux = await res.json()).catch(err => console.error(err))
   if(aux.email){
+    let settings = {
+      method: 'POST',
+      headers: {
+          "Content-Type":"application/json",
+          "Accept": "application/json"
+      },
+      body: JSON.stringify({id: {}, day: "7", month: "12", year: "2022"})
+    };
+    fetch(`${import.meta.env.VITE_BACKEND_SERVICE}Mongo`, settings)
     window.location.href = "/";
     sessionStorage.setItem('username', response.email);
     sessionStorage.setItem('token', response.token);
