@@ -102,20 +102,27 @@ export const Suscripcion = () => {
   }
   
   const crearEvento = async() => {
+
     let email = sessionStorage.getItem('username')
     let response = await createPenca({id:0, link:'string', nombre: nombre, usuario_creador: email, torneo: parseInt(torneoSelected), esCompartida: false})
     if(response.statusOk){
+
       let pencas = await getPencaEmpresarial()
       let id_penca = pencas[pencas.length - 1].id
       let response2 = await createSuscription({id_PencaEmpresarial: id_penca, rut: 'ff', nroTar_Credito: 'ff', username_Usuario: email})
       if(response2){
+        
+
         let aux = [];
         for(let i in list){
           let aux2 = list[i].replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
+
           aux2 = aux2.replaceAll('@', '123456789')
+
           aux2 = aux2.replaceAll('.', 'punto')
-          aux[i].email = list[i];
-          aux[i].link = aux2; 
+          let x = 'https://tupenca.netlify.app/confirmar/' + id_penca + '/' + aux2;
+          aux.push({email:list[i],link:x})
+          
         }
         
         console.log(aux)
