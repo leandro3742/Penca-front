@@ -112,7 +112,7 @@ export const Suscripcion = () => {
         let aux = email.replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
         aux = aux.replaceAll('@', '123456789')
         aux = aux.replaceAll('.', 'punto')
-        sendEmails({emails: list, link:`http://localhost:5173/confirmar/${id_penca}/${aux}`})
+        sendEmails({emails: list, link:`https://tupenca.netlify.app/confirmar/${id_penca}/${aux}`})
         setEstaPago(false)
         completeTask()
       }
