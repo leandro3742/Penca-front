@@ -109,10 +109,17 @@ export const Suscripcion = () => {
       let id_penca = pencas[pencas.length - 1].id
       let response2 = await createSuscription({id_PencaEmpresarial: id_penca, rut: 'ff', nroTar_Credito: 'ff', username_Usuario: email})
       if(response2){
-        let aux = email.replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
-        aux = aux.replaceAll('@', '123456789')
-        aux = aux.replaceAll('.', 'punto')
-        sendEmails({emails: list, link:`https://tupenca.netlify.app/confirmar/${id_penca}/${aux}`})
+        let aux = [];
+        for(let i in list){
+          let aux2 = list[i].replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
+          aux2 = aux2.replaceAll('@', '123456789')
+          aux2 = aux2.replaceAll('.', 'punto')
+          aux[i].email = list[i];
+          aux[i].link = aux2; 
+        }
+        
+        console.log(aux)
+        sendEmails(aux)
         setEstaPago(false)
         completeTask()
       }
