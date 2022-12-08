@@ -249,7 +249,7 @@ async function getEventos() {
         }
 
 
-        fin.innerHTML = 'Evento Finalizado ' + '- '+ puntosxpartido + ' puntos <br>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
+        fin.innerHTML = 'Evento Finalizado <br>' + e1.textContent + ' ' + response[i]['golesEquipo1'] + ' - ' + response[i]['golesEquipo2'] + ' ' + e2.textContent;
         fin.classList = 'borrar';
 
         if(response[i]['resultado'] == ""){
