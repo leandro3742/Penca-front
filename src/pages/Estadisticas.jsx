@@ -27,8 +27,8 @@ const Estadisticas = () => {
         <div className='portadaRegistro' style={{width:'100%'}}>
         {Object.keys(data).length > 0 &&
             <div className='center login1' style={{paddingBottom: '20px'}}>
-                <h5 className='text-white'>Cantidad de pencas Empresariales: {data.empresariales.length}</h5>
-                <h5 className='text-white'>Cantidad de pencas Compartidas: {data.compartidas.length}</h5>
+                <h5 className='text-white'>Cantidad de pencas Empresariales: {data.empresariales ? data.empresariales.length : 0}</h5>
+                <h5 className='text-white'>Cantidad de pencas Compartidas: {data.compartidas ? data.compartidas.length : 0}</h5>
                 <h5 className='text-white'>Cantidad de usuarios logeados hoy: {mongo.length}</h5>
             </div>
         }
