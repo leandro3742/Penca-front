@@ -107,7 +107,7 @@ export const Suscripcion = () => {
     if(response.statusOk){
       let pencas = await getPencaEmpresarial()
       let id_penca = pencas[pencas.length - 1].id
-      let response2 = await createSuscription({id_PencaEmpresarial: id_penca, rut: 'ff', nroTar_Credito: 'ff', Username_Usuario: email})
+      let response2 = await createSuscription({id_PencaEmpresarial: id_penca, rut: 'ff', nroTar_Credito: 'ff', username_Usuario: email})
       if(response2){
         let aux = email.replaceAll('a', 'k4as212fvlkh621ddf4679342fcwe42')
         aux = aux.replaceAll('@', '123456789')
@@ -118,7 +118,7 @@ export const Suscripcion = () => {
       }
     }
     else(
-      alert(response.statusMessage)
+      console.log(response.statusMessage)
     )
   }
 
